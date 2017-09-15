@@ -55,6 +55,7 @@ import AlignmentControls from "./toolBar/alignmentControls"
 import InlineStyleControls from "./toolBar/inlineStyleControls"
 import PasteNoStyleControls from "./toolBar/pasteNoStyleControls"
 import {AddUrl,CloseUrl} from "./toolBar/urlControls"
+import {AddField} from "./toolBar/dynamicFieldControls"
 import {OpenFull,AutoSave,SourceEditor} from "./toolBar/cookieControls"
 import RemoveStyleControls from "./toolBar/removeStyleControls"
 import UndoRedo from "./toolBar/undoredoControls"
@@ -171,6 +172,7 @@ class EditorConcist extends React.Component {
     this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
 
     this.promptForLink = this._promptForLink.bind(this);
+    this.promptForField = this._promptForField.bind(this);
     this.onURLChange = (e) => this.setState({urlValue: e.target.value});
     this.confirmLink = this._confirmLink.bind(this);
     this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
@@ -344,7 +346,73 @@ this.setState({editorState:ccc})
     //   message.error(lang[this.state.language].selectedText, 5);
     // }
   }
+  _promptForField(e) {
+    e.preventDefault();
+    const {editorState} = this.state;
+    const selection = editorState.getSelection();
 
+    const content = editorState.getCurrentContent();
+            // contentState = convertToRaw(content);
+    console.log(content)
+  const contentStateWithEntity = content.createEntity('aaa', 'IMMUTABLE', { aaa: 'bbb' });
+
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+    // const contentStateWithEntity = Entity.create('aaa', 'IMMUTABLE', { aaa: 'bbb' });
+  // const entityKey = Entity.create('aaa', 'IMMUTABLE', {data: 'urlValue'});
+  console.log(entityKey,'entityKey')
+const currentSelectionState = editorState.getSelection();
+let emojiAddedContent;
+  let emojiEndPos = 0;
+  let blockSize = 0;
+
+  const afterRemovalContentState = Modifier.removeRange(
+        content,
+        currentSelectionState,
+        'backward'
+      );
+
+    const targetSelection = afterRemovalContentState.getSelectionAfter();
+
+    emojiAddedContent = Modifier.insertText(
+        afterRemovalContentState,
+        targetSelection,
+        '{{字段一}}',
+        null,
+        entityKey,
+      );
+
+      emojiEndPos = targetSelection.getAnchorOffset();
+      const blockKey = targetSelection.getAnchorKey();
+      blockSize = content.getBlockForKey(blockKey).getLength();
+
+      if (emojiEndPos === blockSize) {
+    emojiAddedContent = Modifier.insertText(
+      emojiAddedContent,
+      emojiAddedContent.getSelectionAfter(),
+      ' ',
+    );
+  }
+const newEditorState = EditorState.push(
+    editorState,
+    emojiAddedContent,
+    'insert-emoji',
+  );
+  const ccc = EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
+this.setState({editorState:ccc})
+
+    // if (!selection.isCollapsed()) {
+
+    //   let that = this;
+    //   this.setState({
+    //     showURLInput: true,
+    //     urlValue: '',
+    //     visible: true
+    //   }, () => {
+    //   });
+    // } else {
+    //   message.error(lang[this.state.language].selectedText, 5);
+    // }
+  }
   _confirmLink(e) {
     // console.log("_confirmLink urlValue", urlValue)
     const {editorState, urlValue} = this.state;
@@ -782,6 +850,7 @@ this.setState({editorState:ccc})
           {this.state.showMarkdownSource==false&&this.props.audio&&<AudioStyleControls uploadConfig={this.props.uploadConfig} receiveAudio={this.addAudio} lang={lang[this.state.language]}
           uploadProps={this.props.uploadProps}/>}
           {this.state.showMarkdownSource==false&&this.props.urls&&<AddUrl editorState={editorState} onToggle={this.promptForLink} lang={lang[this.state.language]}/>}
+          {this.state.showMarkdownSource==false&&this.props.urls&&<AddField editorState={editorState} onToggle={this.promptForField} lang={lang[this.state.language]}/>}
           {this.state.showMarkdownSource==false&&this.props.urls&&<CloseUrl editorState={editorState} onToggle={this.removeLink} lang={lang[this.state.language]}/>}
           {this.state.showMarkdownSource==false&&this.props.autoSave&&<AutoSaveControls initContent={this.state.initContent} onChange={this.onChange} receiveSavedItem={this.choiceAutoSave} lang={lang[this.state.language]}/>}
           {this.props.fullScreen&&<OpenFull editorState={editorState} onToggle={this.openFull} coverTitle={this.state.openFullTest} lang={lang[this.state.language]}/>}
