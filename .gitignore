@@ -1,0 +1,8 @@
+.idea/
+dist/*
+release/*
+node_modules/*
+npm-debug.log
+npm-debug.log.*
+*.ts
+/App ready.
