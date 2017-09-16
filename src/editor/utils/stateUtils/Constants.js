@@ -16,6 +16,7 @@ export const BLOCK_TYPE = {
 };
 
 export const ENTITY_TYPE = {
+  FIELD:'FIELD',
   LINK: 'LINK',
   IMAGE: 'IMAGE',
   VIDEO: 'VIDEO',
