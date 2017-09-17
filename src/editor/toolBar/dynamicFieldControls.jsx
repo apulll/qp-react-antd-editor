@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {Tooltip, Icon, Popover,Button, Tabs, Tag, Radio } from "antd"
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
-const plainOptions = ['Apple', 'Pear', 'Orange'];
-const options = [
-  { label: 'Apple', value: 'Apple' },
-  { label: 'Pear', value: 'Pear' },
-  { label: 'Orange', value: 'Orange' },
-];
+
+import { mapValues,findKey } from 'lodash'
+// const plainOptions = ['Apple', 'Pear', 'Orange'];
+// const options = [
+//   { label: 'Apple', value: 'Apple' },
+//   { label: 'Pear', value: 'Pear' },
+//   { label: 'Orange', value: 'Orange' },
+// ];
 
 
 class AddField extends Component {
@@ -16,13 +18,36 @@ class AddField extends Component {
     this.state = {
       visible: false,
       value:null,
+      fieldTpl:null
     }
     this.hide = this.hide.bind(this)
     this.onOk = this.onOk.bind(this)
     this.onChange1 = this.onChange1.bind(this)
     this.handleVisibleChange = this.handleVisibleChange.bind(this)
   }
+  componentDidMount() {
+    console.log(this.props,'field props')
+    this.renderField()
+  }
+  renderField() {
+    const fieldData = this.props.fieldProps
 
+    const tpl = fieldData.map( (item) => {
+
+      
+
+      return (
+          <div key={item.id}>
+              <h5>{item.name}</h5>
+              <RadioGroup name="radiogroup" options={item.child} onChange={this.onChange1} value={this.state.value} />
+              
+          </div>
+      )
+    })
+    console.log(tpl,'tpl')
+    this.setState({fieldTpl:tpl})
+
+  }
   hide(){
     this.setState({
       visible: false,
@@ -33,13 +58,16 @@ class AddField extends Component {
       visible: false,
     },()=> {
       //example
-      const value = {id:'F111', txt:'字段一'}
+      // const aaa = findKey(this.props.fieldProps, ['value', this.state.value])
+      // console.log(aaa)
+
+      const value = {id:this.state.value, txt:'字段一'}
       this.props.onToggle(e, value)
       //console.log(this.props.onToggle(e, value))
     });
   }
   onChange1(e){
-    console.log('radio1 checked', e.target.value);
+    console.log('radio1 checked', e.target);
     this.setState({
       value: e.target.value,
     });
@@ -48,10 +76,29 @@ class AddField extends Component {
     this.setState({ visible });
   }
   render() {
+    // const  { fieldTpl } = this.state
+    const fieldData = this.props.fieldProps
+
+    const fieldTpl = fieldData.map( (item) => {
+
+      return (
+          <div key={item.id} style={{ marginBottom:20 }}>
+              <h3>{item.name}：</h3>
+              <RadioGroup options={item.child} onChange={this.onChange1} value={this.state.value} />
+              
+          </div>
+      )
+    })
 
     const tpl = <div>
+                  {fieldTpl}
+
+                  <div style={{marginTop: 10}}>
+                    
+                    <Button type="primary"  size='small' onClick={this.onOk} >确定</Button>&nbsp;&nbsp;
+                    <Button type="dashed"  size='small' onClick={this.hide} >取消</Button>
+                  </div>
                   
-                  <a onClick={this.onOk}>确定</a><a onClick={this.hide}>Close</a>
                 </div>
 
 
@@ -63,6 +110,7 @@ class AddField extends Component {
         trigger="hover"
         visible={this.state.visible}
         onVisibleChange={this.handleVisibleChange}
+        overlayStyle={{maxWidth:400}}
       >
         <div className="RichEditor-controls">
           <span className="RichEditor-styleButton" onClick={this.props.onToggle} title='添加动态字段'>

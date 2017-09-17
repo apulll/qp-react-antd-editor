@@ -3,6 +3,7 @@
  */
 import './components.css'
 import '../global/supports/resources/system.css';
+import fieldProps from './mock/field'
 // import 'antd/dist/antd.css';
 import React, {
   Component
@@ -1010,6 +1011,9 @@ class EditorConcist extends React.Component {
                                     }
                                     onToggle = {
                                       this.promptForField
+                                    }
+                                    fieldProps = {
+                                      fieldProps
                                     }
                                     lang = {
                                       lang[this.state.language]
