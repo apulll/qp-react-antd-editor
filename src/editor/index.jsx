@@ -1005,7 +1005,7 @@ class EditorConcist extends React.Component {
                                     lang[this.state.language]
                                   }
                                   />} {
-                                    this.state.showMarkdownSource == false && this.props.urls && < AddField editorState = {
+                                    this.state.showMarkdownSource == false && this.props.field && < AddField editorState = {
                                       editorState
                                     }
                                     onToggle = {
@@ -1271,6 +1271,7 @@ class EditorConcist extends React.Component {
                                         video: React.PropTypes.bool,
                                         audio: React.PropTypes.bool,
                                         urls: React.PropTypes.bool,
+                                        field: React.PropTypes.bool,
                                         autoSave: React.PropTypes.bool,
                                         fullScreen: React.PropTypes.bool,
                                         uploadConfig: React.PropTypes.shape({
@@ -1299,6 +1300,7 @@ class EditorConcist extends React.Component {
                                         video: true,
                                         audio: true,
                                         urls: true,
+                                        field: true,
                                         autoSave: true,
                                         fullScreen: true,
                                         convertFormat: 'html',

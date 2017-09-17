@@ -1,13 +1,25 @@
 import React, {Component} from 'react';
-import {Tooltip, Icon, Popover,Button} from "antd"
+import {Tooltip, Icon, Popover,Button, Tabs, Tag, Radio } from "antd"
+const TabPane = Tabs.TabPane;
+const RadioGroup = Radio.Group;
+const plainOptions = ['Apple', 'Pear', 'Orange'];
+const options = [
+  { label: 'Apple', value: 'Apple' },
+  { label: 'Pear', value: 'Pear' },
+  { label: 'Orange', value: 'Orange' },
+];
+
+
 class AddField extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
+      value:null,
     }
     this.hide = this.hide.bind(this)
     this.onOk = this.onOk.bind(this)
+    this.onChange1 = this.onChange1.bind(this)
     this.handleVisibleChange = this.handleVisibleChange.bind(this)
   }
 
@@ -26,13 +38,26 @@ class AddField extends Component {
       //console.log(this.props.onToggle(e, value))
     });
   }
+  onChange1(e){
+    console.log('radio1 checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  }
   handleVisibleChange(visible){
     this.setState({ visible });
   }
   render() {
+
+    const tpl = <div>
+                  
+                  <a onClick={this.onOk}>确定</a><a onClick={this.hide}>Close</a>
+                </div>
+
+
     return (
       <Popover
-        content={<div><a onClick={this.onOk}>确定</a><a onClick={this.hide}>Close</a></div>}
+        content={tpl}
         placement="right"
         title="动态字段添加"
         trigger="hover"
