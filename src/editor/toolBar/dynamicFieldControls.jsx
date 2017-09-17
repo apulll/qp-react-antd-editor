@@ -3,7 +3,7 @@ import {Tooltip, Icon, Popover,Button, Tabs, Tag, Radio } from "antd"
 const TabPane = Tabs.TabPane;
 const RadioGroup = Radio.Group;
 
-import { mapValues,findKey } from 'lodash'
+import { mapValues,findKey, find, forEach } from 'lodash'
 // const plainOptions = ['Apple', 'Pear', 'Orange'];
 // const options = [
 //   { label: 'Apple', value: 'Apple' },
@@ -27,7 +27,7 @@ class AddField extends Component {
   }
   componentDidMount() {
     console.log(this.props,'field props')
-    this.renderField()
+    // this.renderField()
   }
   renderField() {
     const fieldData = this.props.fieldProps
@@ -53,15 +53,32 @@ class AddField extends Component {
       visible: false,
     });
   }
+  findItem() {
+    const newArr = []
+    const arr = _.mapValues(this.props.fieldProps, 'child')
+    const { value } = this.state
+    let selectedVal = {}
+    forEach(arr, function(item){
+
+       const findItem = find(item, ['value', value]);
+        if(findItem) {
+          selectedVal = findItem
+        }
+      // if(selectedVal){
+      //   return
+      // }
+      // newArr.push(value)
+    })
+    return selectedVal
+  }
   onOk(e){
     this.setState({
       visible: false,
     },()=> {
       //example
-      // const aaa = findKey(this.props.fieldProps, ['value', this.state.value])
-      // console.log(aaa)
-
-      const value = {id:this.state.value, txt:'字段一'}
+      
+      const selectedItem = this.findItem()
+      const value = { id:this.state.value, txt:selectedItem.name }
       this.props.onToggle(e, value)
       //console.log(this.props.onToggle(e, value))
     });
@@ -79,7 +96,7 @@ class AddField extends Component {
     // const  { fieldTpl } = this.state
     const fieldData = this.props.fieldProps
 
-    const fieldTpl = fieldData.map( (item) => {
+    const fieldTpl = fieldData ? fieldData.map( (item) => {
 
       return (
           <div key={item.id} style={{ marginBottom:20 }}>
@@ -88,7 +105,7 @@ class AddField extends Component {
               
           </div>
       )
-    })
+    }) : null
 
     const tpl = <div>
                   {fieldTpl}
