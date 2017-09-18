@@ -24,6 +24,10 @@ require('./components.css');
 
 require('../global/supports/resources/system.css');
 
+var _field = require('./mock/field');
+
+var _field2 = _interopRequireDefault(_field);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -47,6 +51,10 @@ var _i18n = require('../global/i18n');
 var _LinkDecorator = require('./decorators/LinkDecorator');
 
 var _LinkDecorator2 = _interopRequireDefault(_LinkDecorator);
+
+var _FieldDecorator = require('./decorators/FieldDecorator');
+
+var _FieldDecorator2 = _interopRequireDefault(_FieldDecorator);
 
 var _ImageDecorator = require('./decorators/ImageDecorator');
 
@@ -102,6 +110,8 @@ var _pasteNoStyleControls2 = _interopRequireDefault(_pasteNoStyleControls);
 
 var _urlControls = require('./toolBar/urlControls');
 
+var _dynamicFieldControls = require('./toolBar/dynamicFieldControls');
+
 var _cookieControls = require('./toolBar/cookieControls');
 
 var _removeStyleControls = require('./toolBar/removeStyleControls');
@@ -136,7 +146,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
+var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _FieldDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
 
 var EditorConcist = function (_React$Component) {
   _inherits(EditorConcist, _React$Component);
@@ -147,6 +157,7 @@ var EditorConcist = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (EditorConcist.__proto__ || Object.getPrototypeOf(EditorConcist)).call(this, props));
 
     _this.state = {
+      initContent: '',
       openFullTest: "",
       showSourceEditor: "",
       showURLInput: false,
@@ -184,11 +195,14 @@ var EditorConcist = function (_React$Component) {
     };
 
     _this.onChange = function (editorState) {
-      _this.setState({ editorState: editorState });
+      _this.setState({
+        editorState: editorState
+      });
       var that = _this;
       if (that.timer) {
         clearTimeout(that.timer);
       }
+
       that.timer = setTimeout(function () {
         var rawContentState = that.state.editorState.getCurrentContent();
 
@@ -202,6 +216,10 @@ var EditorConcist = function (_React$Component) {
           var rawContent = (0, _draftJs.convertToRaw)(rawContentState);
           content = JSON.stringify(rawContent);
         }
+
+        that.setState({
+          initContent: content
+        });
         that.props.cbReceiver(content);
       }, 300);
     };
@@ -239,8 +257,11 @@ var EditorConcist = function (_React$Component) {
     };
 
     _this.promptForLink = _this._promptForLink.bind(_this);
+    _this.promptForField = _this._promptForField.bind(_this);
     _this.onURLChange = function (e) {
-      return _this.setState({ urlValue: e.target.value });
+      return _this.setState({
+        urlValue: e.target.value
+      });
     };
     _this.confirmLink = _this._confirmLink.bind(_this);
     _this.onLinkInputKeyDown = _this._onLinkInputKeyDown.bind(_this);
@@ -269,7 +290,8 @@ var EditorConcist = function (_React$Component) {
         language = currLang.simpLang;
       }
       language = language || "en";
-      this.setState({ language: language,
+      this.setState({
+        language: language,
         openFullTest: _i18n.lang[language].fullScreen,
         showSourceEditor: _i18n.lang[language].sourceCode
       });
@@ -277,6 +299,9 @@ var EditorConcist = function (_React$Component) {
       var content = this.props.importContent;
 
       var contentState = (0, _utils.stateFromHTML)(content);
+      this.setState({
+        initContent: contentState
+      });
 
       this.state.autoSaveFun = setInterval(function () {
         _this2.handleKeyCommand("editor-save");
@@ -327,12 +352,16 @@ var EditorConcist = function (_React$Component) {
   }, {
     key: 'handleOk',
     value: function handleOk() {
-      this.setState({ visible: false });
+      this.setState({
+        visible: false
+      });
     }
   }, {
     key: 'handleCancel',
     value: function handleCancel(e) {
-      this.setState({ visible: false });
+      this.setState({
+        visible: false
+      });
     }
   }, {
     key: '_promptForLink',
@@ -341,6 +370,7 @@ var EditorConcist = function (_React$Component) {
       var editorState = this.state.editorState;
 
       var selection = editorState.getSelection();
+
       if (!selection.isCollapsed()) {
 
         var that = this;
@@ -354,13 +384,68 @@ var EditorConcist = function (_React$Component) {
       }
     }
   }, {
+    key: 'tohanzi',
+    value: function tohanzi(data) {
+      data = data.split('\\u');
+      var str = '';
+      for (var i = 0; i < data.length; i++) {
+        str += String.fromCharCode(parseInt(data[i], 16).toString(10));
+      }
+      return str;
+    }
+  }, {
+    key: '_promptForField',
+    value: function _promptForField(e, val) {
+      var editorState = this.state.editorState;
+
+      var selection = editorState.getSelection();
+
+      var content = editorState.getCurrentContent();
+
+      console.log(content);
+      var contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', {
+        id: val.id,
+        field: val.field });
+      var entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+
+      console.log(entityKey, 'entityKey');
+      var currentSelectionState = editorState.getSelection();
+      var emojiAddedContent = void 0;
+      var emojiEndPos = 0;
+      var blockSize = 0;
+
+      var afterRemovalContentState = _draftJs.Modifier.removeRange(content, currentSelectionState, 'backward');
+
+      var targetSelection = afterRemovalContentState.getSelectionAfter();
+
+      console.log(val, 'val');
+      var txt = this.tohanzi(val.txt);
+
+      emojiAddedContent = _draftJs.Modifier.insertText(afterRemovalContentState, targetSelection, val.txt, null, entityKey);
+
+      emojiEndPos = targetSelection.getAnchorOffset();
+      var blockKey = targetSelection.getAnchorKey();
+      blockSize = content.getBlockForKey(blockKey).getLength();
+
+      if (emojiEndPos === blockSize) {
+        emojiAddedContent = _draftJs.Modifier.insertText(emojiAddedContent, emojiAddedContent.getSelectionAfter(), ' ');
+      }
+      var newEditorState = _draftJs.EditorState.push(editorState, emojiAddedContent, 'insert-field');
+      var isNewEditorState = _draftJs.EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
+      this.setState({
+        editorState: isNewEditorState
+      });
+    }
+  }, {
     key: '_confirmLink',
     value: function _confirmLink(e) {
       var _state = this.state,
           editorState = _state.editorState,
           urlValue = _state.urlValue;
 
-      var entityKey = _draftJs.Entity.create('LINK', 'MUTABLE', { url: urlValue });
+      var entityKey = _draftJs.Entity.create('LINK', 'MUTABLE', {
+        url: urlValue
+      });
       this.setState({
         editorState: _draftJs.RichUtils.toggleLink(editorState, editorState.getSelection(), entityKey),
         showURLInput: false,
@@ -549,7 +634,7 @@ var EditorConcist = function (_React$Component) {
         return true;
       }
       this.state.hasPasted = true;
-      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
+      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _FieldDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
       var contentState = "";
 
       if (ConvertFormatProps === 'html') {
@@ -589,7 +674,9 @@ var EditorConcist = function (_React$Component) {
         throw new Error(_i18n.lang[this.state.language].errorUploadingFile);
         return false;
       }
-      var entityKey = _draftJs.Entity.create(type, 'IMMUTABLE', { src: src });
+      var entityKey = _draftJs.Entity.create(type, 'IMMUTABLE', {
+        src: src
+      });
       return _draftJs.AtomicBlockUtils.insertAtomicBlock(this.state.editorState, entityKey, ' ');
     }
   }, {
@@ -629,7 +716,7 @@ var EditorConcist = function (_React$Component) {
   }, {
     key: '_pasteNoStyle',
     value: function _pasteNoStyle(sourceString) {
-      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
+      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _FieldDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
       var contentState = "";
 
       var ConvertFormatProps = this.props.convertFormat;
@@ -656,7 +743,9 @@ var EditorConcist = function (_React$Component) {
         } else {
           newEditorState = _draftJs.EditorState.redo(this.state.editorState);
         }
-        this.setState({ editorState: newEditorState });
+        this.setState({
+          editorState: newEditorState
+        });
       }
     }
   }, {
@@ -681,10 +770,12 @@ var EditorConcist = function (_React$Component) {
   }, {
     key: '_choiceAutoSave',
     value: function _choiceAutoSave(savedImportContent) {
-      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
+      var decorator = new _draftJs.CompositeDecorator([_LinkDecorator2.default, _FieldDecorator2.default, _ImageDecorator2.default, _VideoDecorator2.default, _AudioDecorator2.default]);
+
       var ConvertFormatProps = this.props.convertFormat;
       var contentState = "";
       if (ConvertFormatProps === 'html') {
+
         contentState = (0, _utils.stateFromHTML)(savedImportContent);
       } else if (ConvertFormatProps === 'markdown') {
         contentState = (0, _utils.stateFromMD)(savedImportContent);
@@ -744,12 +835,19 @@ var EditorConcist = function (_React$Component) {
             onChange: this.onURLChange,
             value: this.state.urlValue,
             placeholder: 'http:// or https://',
-            onKeyDown: this.onLinkInputKeyDown }),
+            onKeyDown: this.onLinkInputKeyDown
+          }),
+          ' ',
           _react2.default.createElement(
             'span',
-            { style: { color: "red" } },
-            _i18n.lang[this.state.language].directToURLTip
-          )
+            { style: {
+                color: "red"
+              } },
+            ' ',
+            _i18n.lang[this.state.language].directToURLTip,
+            ' '
+          ),
+          ' '
         );
       }
 
@@ -765,56 +863,148 @@ var EditorConcist = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'RichEditor-root editorHidden', content: this.state.HTML, id: 'text-editor-container' },
+        { className: 'RichEditor-root editorHidden',
+          content: this.state.HTML,
+          id: 'text-editor-container' },
         _react2.default.createElement(
           'div',
           null,
-          this.state.showMarkdownSource == false && this.props.undoRedo && _react2.default.createElement(_undoredoControls2.default, { onToggle: this.undoRedo, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.removeStyle && _react2.default.createElement(_removeStyleControls2.default, { onToggle: this.removeStyle, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.pasteNoStyle && _react2.default.createElement(_pasteNoStyleControls2.default, { receiveText: this.pasteNoStyle, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.blockStyle && _react2.default.createElement(_blockStyleControls2.default, { editorState: editorState, onToggle: this.toggleBlockType, lang: _i18n.lang[this.state.language] }),
-          this.props.alignment && this.props.convertFormat !== "markdown" && _react2.default.createElement(_alignmentControls2.default, { editorState: editorState, onToggle: this.toggleAlignment, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.inlineStyle && _react2.default.createElement(_inlineStyleControls2.default, { editorState: editorState, onToggle: this.toggleInlineStyle, lang: _i18n.lang[this.state.language] }),
-          this.props.color && this.props.convertFormat !== "markdown" && _react2.default.createElement(_colorControls2.default, { editorState: editorState, onToggle: this.toggleColor, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.image && _react2.default.createElement(_mediaImageUploader2.default, { uploadConfig: this.props.uploadConfig, receiveImage: this.addImage, watermarkImage: this.props.watermarkImage, lang: _i18n.lang[this.state.language],
-            uploadProps: this.props.uploadProps }),
-          this.state.showMarkdownSource == false && this.props.video && _react2.default.createElement(_medioVideoUploader2.default, { uploadConfig: this.props.uploadConfig, receiveVideo: this.addVideo, lang: _i18n.lang[this.state.language],
-            uploadProps: this.props.uploadProps }),
-          this.state.showMarkdownSource == false && this.props.audio && _react2.default.createElement(_medioAudioUploader2.default, { uploadConfig: this.props.uploadConfig, receiveAudio: this.addAudio, lang: _i18n.lang[this.state.language],
-            uploadProps: this.props.uploadProps }),
-          this.state.showMarkdownSource == false && this.props.urls && _react2.default.createElement(_urlControls.AddUrl, { editorState: editorState, onToggle: this.promptForLink, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.urls && _react2.default.createElement(_urlControls.CloseUrl, { editorState: editorState, onToggle: this.removeLink, lang: _i18n.lang[this.state.language] }),
-          this.state.showMarkdownSource == false && this.props.autoSave && _react2.default.createElement(_autoSaveList2.default, { receiveSavedItem: this.choiceAutoSave, lang: _i18n.lang[this.state.language] }),
-          this.props.fullScreen && _react2.default.createElement(_cookieControls.OpenFull, { editorState: editorState, onToggle: this.openFull, coverTitle: this.state.openFullTest, lang: _i18n.lang[this.state.language] }),
-          this.props.convertFormat == "markdown" && _react2.default.createElement(_cookieControls.SourceEditor, { editorState: editorState, onToggle: this.toggleSource, coverTitle: this.state.showSourceEditor, lang: _i18n.lang[this.state.language] })
+          ' ',
+          this.state.showMarkdownSource == false && this.props.undoRedo && _react2.default.createElement(_undoredoControls2.default, { onToggle: this.undoRedo,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.removeStyle && _react2.default.createElement(_removeStyleControls2.default, { onToggle: this.removeStyle,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.pasteNoStyle && _react2.default.createElement(_pasteNoStyleControls2.default, { receiveText: this.pasteNoStyle,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.blockStyle && _react2.default.createElement(_blockStyleControls2.default, { editorState: editorState,
+            onToggle: this.toggleBlockType,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.props.alignment && this.props.convertFormat !== "markdown" && _react2.default.createElement(_alignmentControls2.default, { editorState: editorState,
+            onToggle: this.toggleAlignment,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.inlineStyle && _react2.default.createElement(_inlineStyleControls2.default, { editorState: editorState,
+            onToggle: this.toggleInlineStyle,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.props.color && this.props.convertFormat !== "markdown" && _react2.default.createElement(_colorControls2.default, { editorState: editorState,
+            onToggle: this.toggleColor,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.image && _react2.default.createElement(_mediaImageUploader2.default, { uploadConfig: this.props.uploadConfig,
+            receiveImage: this.addImage,
+            watermarkImage: this.props.watermarkImage,
+            lang: _i18n.lang[this.state.language],
+            uploadProps: this.props.uploadProps
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.video && _react2.default.createElement(_medioVideoUploader2.default, { uploadConfig: this.props.uploadConfig,
+            receiveVideo: this.addVideo,
+            lang: _i18n.lang[this.state.language],
+            uploadProps: this.props.uploadProps
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.audio && _react2.default.createElement(_medioAudioUploader2.default, { uploadConfig: this.props.uploadConfig,
+            receiveAudio: this.addAudio,
+            lang: _i18n.lang[this.state.language],
+            uploadProps: this.props.uploadProps
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.urls && _react2.default.createElement(_urlControls.AddUrl, { editorState: editorState,
+            onToggle: this.promptForLink,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.field && _react2.default.createElement(_dynamicFieldControls.AddField, { editorState: editorState,
+            onToggle: this.promptForField,
+            fieldProps: this.props.fieldProps,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.urls && _react2.default.createElement(_urlControls.CloseUrl, { editorState: editorState,
+            onToggle: this.removeLink,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.state.showMarkdownSource == false && this.props.autoSave && _react2.default.createElement(_autoSaveList2.default, { initContent: this.state.initContent,
+            onChange: this.onChange,
+            receiveSavedItem: this.choiceAutoSave,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.props.fullScreen && _react2.default.createElement(_cookieControls.OpenFull, { editorState: editorState,
+            onToggle: this.openFull,
+            coverTitle: this.state.openFullTest,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' ',
+          this.props.convertFormat == "markdown" && _react2.default.createElement(_cookieControls.SourceEditor, { editorState: editorState,
+            onToggle: this.toggleSource,
+            coverTitle: this.state.showSourceEditor,
+            lang: _i18n.lang[this.state.language]
+          }),
+          ' '
         ),
+        ' ',
         _react2.default.createElement(
           'div',
-          { className: className, onClick: this.focus, style: { display: this.state.showMarkdownSource == true ? "none" : "block" } },
+          { className: className,
+            onClick: this.focus,
+            style: {
+              display: this.state.showMarkdownSource == true ? "none" : "block"
+            } },
           _react2.default.createElement(_draftJs.Editor, (_React$createElement = {
             blockRendererFn: mediaBlockRenderer,
             editorState: this.state.editorState,
             blockStyleFn: getBlockStyle,
             customStyleMap: styleMap
-          }, _defineProperty(_React$createElement, 'customStyleMap', _colorConfig.colorStyleMap), _defineProperty(_React$createElement, 'editorState', editorState), _defineProperty(_React$createElement, 'handleKeyCommand', this.handleKeyCommand), _defineProperty(_React$createElement, 'keyBindingFn', this.customKeyBinding), _defineProperty(_React$createElement, 'onChange', this.onChange), _defineProperty(_React$createElement, 'handlePastedText', this.handlePastedText), _defineProperty(_React$createElement, 'spellCheck', true), _React$createElement))
+          }, _defineProperty(_React$createElement, 'customStyleMap', _colorConfig.colorStyleMap), _defineProperty(_React$createElement, 'editorState', editorState), _defineProperty(_React$createElement, 'handleKeyCommand', this.handleKeyCommand), _defineProperty(_React$createElement, 'keyBindingFn', this.customKeyBinding), _defineProperty(_React$createElement, 'onChange', this.onChange), _defineProperty(_React$createElement, 'handlePastedText', this.handlePastedText), _defineProperty(_React$createElement, 'spellCheck', true), _React$createElement)),
+          ' '
         ),
+        ' ',
         _react2.default.createElement(
           'div',
-          { style: { display: this.state.showMarkdownSource == true ? "block" : "none", height: "500px", width: "100%" } },
+          { style: {
+              display: this.state.showMarkdownSource == true ? "block" : "none",
+              height: "500px",
+              width: "100%"
+            } },
           _react2.default.createElement('textarea', {
-            style: { height: "100%", width: "100%", overflowY: "visible" },
+            style: {
+              height: "100%",
+              width: "100%",
+              overflowY: "visible"
+            },
             onChange: this.changeMrakdownContent,
             value: this.state.tempSouceContent || this.props.importContent,
-            placeholder: _i18n.lang[this.state.language].markdownTip })
+            placeholder: _i18n.lang[this.state.language].markdownTip
+          }),
+          ' '
         ),
-        urlInput
+        ' ',
+        urlInput,
+        ' '
       );
     }
   }, {
     key: 'localLang',
     get: function get() {
       var lang = navigator.language || navigator.browserLanguage;
-      return { fullLang: lang, simpLang: lang.split("-")[0] };
+      return {
+        fullLang: lang,
+        simpLang: lang.split("-")[0]
+      };
     }
   }]);
 
@@ -865,22 +1055,28 @@ function getBlockStyle(block) {
 
 function mediaBlockRenderer(block) {
   if (block.getType() === 'atomic') {
-    return { component: Media, editable: false };
+    return {
+      component: Media,
+      editable: false
+    };
   }
 
   return null;
 }
 
 var Audio = function Audio(props) {
-  return _react2.default.createElement('audio', { controls: true, src: props.src, className: 'media' });
+  return _react2.default.createElement('audio', { controls: true, src: props.src,
+    className: 'media' });
 };
 
 var Image = function Image(props) {
-  return _react2.default.createElement('img', { src: props.src, className: 'media' });
+  return _react2.default.createElement('img', { src: props.src,
+    className: 'media' });
 };
 
 var Video = function Video(props) {
-  return _react2.default.createElement('video', { controls: true, src: props.src, className: 'media' });
+  return _react2.default.createElement('video', { controls: true, src: props.src,
+    className: 'media' });
 };
 
 var Media = function Media(props) {
@@ -893,11 +1089,14 @@ var Media = function Media(props) {
 
   var media = void 0;
   if (type === 'audio') {
-    media = _react2.default.createElement(Audio, { src: src });
+    media = _react2.default.createElement(Audio, { src: src
+    });
   } else if (type === 'image') {
-    media = _react2.default.createElement(Image, { src: src });
+    media = _react2.default.createElement(Image, { src: src
+    });
   } else if (type === 'video') {
-    media = _react2.default.createElement(Video, { src: src });
+    media = _react2.default.createElement(Video, { src: src
+    });
   }
   return media;
 };
@@ -917,6 +1116,7 @@ EditorConcist.propTypes = {
   video: _react2.default.PropTypes.bool,
   audio: _react2.default.PropTypes.bool,
   urls: _react2.default.PropTypes.bool,
+  field: _react2.default.PropTypes.bool,
   autoSave: _react2.default.PropTypes.bool,
   fullScreen: _react2.default.PropTypes.bool,
   uploadConfig: _react2.default.PropTypes.shape({
@@ -945,6 +1145,7 @@ EditorConcist.defaultProps = {
   video: true,
   audio: true,
   urls: true,
+  field: false,
   autoSave: true,
   fullScreen: true,
   convertFormat: 'html'

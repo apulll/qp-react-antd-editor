@@ -9,11 +9,11 @@
     "typecheck": "flow",
     "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build && lessc src/global/supports/resources/system.less src/global/supports/resources/system.css",
     "release": "webpack -p --progress --colors --config webpack.release.config.js",
-    "publish": "babel -d src/ publish/ --no-comments && lessc src/global/supports/resources/system.less publish/global/supports/resources/system.css"
+    "publish": "babel -d publish/ src/ --no-comments && lessc src/global/supports/resources/system.less publish/global/supports/resources/system.css"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/leejaen/react-lz-editor.git"       
+    "url": "git+ssh://git@github.com/leejaen/react-lz-editor.git"
   },
   "keywords": [
     "react-editor",

@@ -20,6 +20,7 @@ var BLOCK_TYPE = exports.BLOCK_TYPE = {
 };
 
 var ENTITY_TYPE = exports.ENTITY_TYPE = {
+  FIELD: 'FIELD',
   LINK: 'LINK',
   IMAGE: 'IMAGE',
   VIDEO: 'VIDEO',

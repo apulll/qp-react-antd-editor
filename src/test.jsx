@@ -7,6 +7,7 @@ import md5 from "md5";
 import findIndex from "lodash/findIndex";
 import uniqBy from "lodash/uniqBy";
 import LzEditor from './editor/index.jsx'
+import fieldProps from './editor/mock/field'
 class Test extends React.Component {
   constructor(props) {
     super(props);
@@ -149,6 +150,8 @@ class Test extends React.Component {
           importContent={this.state.htmlContent}
           cbReceiver={this.receiveHtml}
           uploadProps={uploadProps}
+          field = {true}
+          fieldProps = {fieldProps}
           convertFormat="html"
         />
         {/* <LzEditor

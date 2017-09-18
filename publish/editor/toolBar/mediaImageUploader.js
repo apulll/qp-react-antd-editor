@@ -117,6 +117,7 @@ var ImgStyleControls = function (_Component) {
       var images = (0, _cloneDeep2.default)(this.state.pfopImages);
 
       this.setState({ provisible: false, images: [], pfopImages: [], previsible: false });
+
       this.props.receiveImage(images);
     }
   }, {
@@ -143,6 +144,7 @@ var ImgStyleControls = function (_Component) {
   }, {
     key: 'reloadUploadingPictrue',
     value: function reloadUploadingPictrue(picture, index) {
+
       var thePicture = picture.substr(0, ~picture.lastIndexOf("?t=") ? picture.lastIndexOf("?t=") : picture.length);
       var n = picture.substr((~picture.lastIndexOf("?t=") ? picture.lastIndexOf("?t=") : picture.length) + 3);
       picture = thePicture + "?t=" + (parseInt(!!n ? n : "0") + 1);
@@ -279,7 +281,8 @@ var ImgStyleControls = function (_Component) {
               ' '
             ), _react2.default.createElement(
               _button2.default,
-              { key: 'submit', type: 'primary', size: 'large', disabled: that.state.pfopImages.length == 0, onClick: function onClick() {
+              { key: 'submit', type: 'primary', size: 'large', disabled: that.state.pfopImages.length == 0,
+                onClick: function onClick() {
                   return that.realLoading("fromOld");
                 } },
               ' ',

@@ -4,6 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _css = require('antd/lib/tag/style/css');
+
+var _tag = require('antd/lib/tag');
+
+var _tag2 = _interopRequireDefault(_tag);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -14,25 +20,27 @@ var _main = require('../utils/stateUtils/main');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Link(props_) {
+function Field(props_) {
   var _Entity$get$getData = _draftJs.Entity.get(props_.entityKey).getData(),
-      url = _Entity$get$getData.url;
+      id = _Entity$get$getData.id,
+      field = _Entity$get$getData.field;
 
+  console.log(field, 'field');
   return _react2.default.createElement(
-    'a',
-    { href: url, 'data-id': 'abdc' },
+    _tag2.default,
+    { 'data-id': id, 'data-field': field },
     props_.children
   );
 }
 
-function findLinkEntities(contentBlock, callback) {
+function findFieldEntities(contentBlock, callback) {
   contentBlock.findEntityRanges(function (character) {
     var entityKey = character.getEntity();
-    return entityKey != null && _draftJs.Entity.get(entityKey).getType() === _main.ENTITY_TYPE.LINK;
+    return entityKey != null && _draftJs.Entity.get(entityKey).getType() === _main.ENTITY_TYPE.FIELD;
   }, callback);
 }
 
 exports.default = {
-  strategy: findLinkEntities,
-  component: Link
+  strategy: findFieldEntities,
+  component: Field
 };
