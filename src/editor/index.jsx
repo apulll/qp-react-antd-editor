@@ -362,10 +362,7 @@ class EditorConcist extends React.Component {
       const content = editorState.getCurrentContent();
       // contentState = convertToRaw(content);
       console.log(content)
-      const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', {
-        id: val.id ,//可动态变化 通过传值
-        field: val.field //可动态变化 通过传值
-      });
+      const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', val);
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
       console.log(entityKey, 'entityKey')
@@ -380,16 +377,12 @@ class EditorConcist extends React.Component {
         'backward'
       );
 
+      const txt = '<'+val.txt+ val.field + '>'
       const targetSelection = afterRemovalContentState.getSelectionAfter();
-
-      console.log(val,'val')
-      const txt = this.tohanzi(val.txt)
-
-
       emojiAddedContent = Modifier.insertText(
         afterRemovalContentState,
         targetSelection,
-        val.txt, //可动态变化 通过传值
+        txt, //可动态变化 通过传值
         null,
         entityKey,
       );

@@ -12,7 +12,7 @@ class Test extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      htmlContent: `<h1>你好!</h1>`,
+      htmlContent: `<p >你好!的我发法大师&lt;工作岗位{work_station}&gt;傅士大夫大师傅</p>`,
       markdownContent: "## HEAD 2 \n markdown examples \n ``` welcome ```",
       rawContent: '{"entityMap":{"0":{"type":"image","mutability":"IMMUTABLE","data":{"src":"https://image.qiluyidian.mobi/4305350813991067' +
           '8747.jpg"}},"1":{"type":"image","mutability":"IMMUTABLE","data":{"src":"https://image.qiluyidian.mobi/430535081399106787' +
@@ -35,7 +35,8 @@ class Test extends React.Component {
     this.getSignature = this.getSignature.bind(this);
     this.getPolicy = this.getPolicy.bind(this);
   }
-  receiveHtml(content) {
+  receiveHtml(content,content2) {
+    console.log(content,content2,'content')
   }
   componentDidMount() {}
   receiveMarkdown(content) {
@@ -154,7 +155,7 @@ class Test extends React.Component {
           fieldProps = {fieldProps}
           convertFormat="html"
         />
-        {/* <LzEditor
+        <LzEditor
           active={true}
           importContent={this.state.rawContent}
           cbReceiver={this.receiveRaw}
@@ -162,7 +163,9 @@ class Test extends React.Component {
           video={false}
           audio={false}
           convertFormat="raw"
-          lang="zh-CN"/> */}
+          field = {true}
+          fieldProps = {fieldProps}
+          lang="zh-CN"/>
       </div>
     );
   }
