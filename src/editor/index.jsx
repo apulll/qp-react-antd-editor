@@ -343,6 +343,15 @@ class EditorConcist extends React.Component {
         message.error(lang[this.state.language].selectedText, 5);
       }
     }
+    tohanzi(data){
+        data = data.split("\\u");
+        var str ='';
+        for(var i=0;i<data.length;i++)
+        {
+            str+=String.fromCharCode(parseInt(data[i],16).toString(10));
+        }
+        return str;
+    }
     _promptForField(e, val) {
       // e.preventDefault();
       const {
@@ -354,10 +363,11 @@ class EditorConcist extends React.Component {
       // contentState = convertToRaw(content);
       console.log(content)
       const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', {
-        id: val.id //可动态变化 通过传值
+        id: val.id ,//可动态变化 通过传值
+        field: val.field //可动态变化 通过传值
       });
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-      
+
       console.log(entityKey, 'entityKey')
       const currentSelectionState = editorState.getSelection();
       let emojiAddedContent;
@@ -371,6 +381,10 @@ class EditorConcist extends React.Component {
       );
 
       const targetSelection = afterRemovalContentState.getSelectionAfter();
+
+      console.log(val,'val')
+      const txt = this.tohanzi(val.txt)
+
 
       emojiAddedContent = Modifier.insertText(
         afterRemovalContentState,
@@ -1013,7 +1027,7 @@ class EditorConcist extends React.Component {
                                       this.promptForField
                                     }
                                     fieldProps = {
-                                      fieldProps
+                                      this.props.fieldProps
                                     }
                                     lang = {
                                       lang[this.state.language]
@@ -1304,7 +1318,7 @@ class EditorConcist extends React.Component {
                                         video: true,
                                         audio: true,
                                         urls: true,
-                                        field: true,
+                                        field: false,
                                         autoSave: true,
                                         fullScreen: true,
                                         convertFormat: 'html',

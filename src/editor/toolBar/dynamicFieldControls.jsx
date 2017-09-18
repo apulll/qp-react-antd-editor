@@ -34,13 +34,13 @@ class AddField extends Component {
 
     const tpl = fieldData.map( (item) => {
 
-      
+
 
       return (
           <div key={item.id}>
-              <h5>{item.name}</h5>
+              <h5>{item.title}</h5>
               <RadioGroup name="radiogroup" options={item.child} onChange={this.onChange1} value={this.state.value} />
-              
+
           </div>
       )
     })
@@ -76,9 +76,9 @@ class AddField extends Component {
       visible: false,
     },()=> {
       //example
-      
+
       const selectedItem = this.findItem()
-      const value = { id:this.state.value, txt:selectedItem.name }
+      const value = { id:this.state.value, txt:selectedItem.title, field: selectedItem.field }
       this.props.onToggle(e, value)
       //console.log(this.props.onToggle(e, value))
     });
@@ -100,9 +100,9 @@ class AddField extends Component {
 
       return (
           <div key={item.id} style={{ marginBottom:20 }}>
-              <h3>{item.name}：</h3>
+              <h3>{item.title}：</h3>
               <RadioGroup options={item.child} onChange={this.onChange1} value={this.state.value} />
-              
+
           </div>
       )
     }) : null
@@ -111,11 +111,11 @@ class AddField extends Component {
                   {fieldTpl}
 
                   <div style={{marginTop: 10}}>
-                    
+
                     <Button type="primary"  size='small' onClick={this.onOk} >确定</Button>&nbsp;&nbsp;
                     <Button type="dashed"  size='small' onClick={this.hide} >取消</Button>
                   </div>
-                  
+
                 </div>
 
 
