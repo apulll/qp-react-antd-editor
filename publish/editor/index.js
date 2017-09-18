@@ -403,9 +403,7 @@ var EditorConcist = function (_React$Component) {
       var content = editorState.getCurrentContent();
 
       console.log(content);
-      var contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', {
-        id: val.id,
-        field: val.field });
+      var contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', val);
       var entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
       console.log(entityKey, 'entityKey');
@@ -416,12 +414,9 @@ var EditorConcist = function (_React$Component) {
 
       var afterRemovalContentState = _draftJs.Modifier.removeRange(content, currentSelectionState, 'backward');
 
+      var txt = '<' + val.txt + val.field + '>';
       var targetSelection = afterRemovalContentState.getSelectionAfter();
-
-      console.log(val, 'val');
-      var txt = this.tohanzi(val.txt);
-
-      emojiAddedContent = _draftJs.Modifier.insertText(afterRemovalContentState, targetSelection, val.txt, null, entityKey);
+      emojiAddedContent = _draftJs.Modifier.insertText(afterRemovalContentState, targetSelection, txt, null, entityKey);
 
       emojiEndPos = targetSelection.getAnchorOffset();
       var blockKey = targetSelection.getAnchorKey();
