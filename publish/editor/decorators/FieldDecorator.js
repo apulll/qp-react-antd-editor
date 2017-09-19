@@ -23,7 +23,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function Field(props_) {
   var _Entity$get$getData = _draftJs.Entity.get(props_.entityKey).getData(),
       id = _Entity$get$getData.id,
-      field = _Entity$get$getData.field;
+      field = _Entity$get$getData.field,
+      txt = _Entity$get$getData.txt;
 
   console.log(field, 'field');
   return _react2.default.createElement(

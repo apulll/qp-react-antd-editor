@@ -6,17 +6,29 @@ var _modal = require('antd/lib/modal');
 
 var _modal2 = _interopRequireDefault(_modal);
 
-var _css2 = require('antd/lib/icon/style/css');
+var _css2 = require('antd/lib/table/style/css');
+
+var _table = require('antd/lib/table');
+
+var _table2 = _interopRequireDefault(_table);
+
+var _css3 = require('antd/lib/popconfirm/style/css');
+
+var _popconfirm = require('antd/lib/popconfirm');
+
+var _popconfirm2 = _interopRequireDefault(_popconfirm);
+
+var _css4 = require('antd/lib/button/style/css');
+
+var _button = require('antd/lib/button');
+
+var _button2 = _interopRequireDefault(_button);
+
+var _css5 = require('antd/lib/icon/style/css');
 
 var _icon = require('antd/lib/icon');
 
 var _icon2 = _interopRequireDefault(_icon);
-
-var _css3 = require('antd/lib/tree/style/css');
-
-var _tree = require('antd/lib/tree');
-
-var _tree2 = _interopRequireDefault(_tree);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -24,19 +36,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _draftJs = require('draft-js');
-
 var _publicDatas = require('../../global/supports/publicDatas');
 
 var _find = require('lodash/find');
 
 var _find2 = _interopRequireDefault(_find);
-
-var _ImageDecorator = require('../decorators/ImageDecorator');
-
-var _ImageDecorator2 = _interopRequireDefault(_ImageDecorator);
-
-var _utils = require('../utils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,104 +50,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TreeNode = _tree2.default.TreeNode;
-var rawContent = {
-  blocks: [{
-    text: 'This is an "immutable" entity: Superman. Deleting any ' + 'characters will delete the entire entity. Adding characters ' + 'will remove the entity from the range.',
-    type: 'unstyled',
-    entityRanges: [{ offset: 31, length: 3, key: 'first' }]
-  }, {
-    text: '',
-    type: 'unstyled'
-  }, {
-    text: 'This is a "mutable" entity: Batman. Characters may be added ' + 'and removed.',
-    type: 'unstyled',
-    entityRanges: [{ offset: 28, length: 6, key: 'second' }]
-  }, {
-    text: '',
-    type: 'unstyled'
-  }, {
-    text: 'This is a "segmented" entity: Green Lantern. Deleting any ' + 'characters will delete the current "segment" from the range. ' + 'Adding characters will remove the entire entity from the range.',
-    type: 'unstyled',
-    entityRanges: [{ offset: 30, length: 13, key: 'third' }]
-  }],
-
-  entityMap: {
-    first: {
-      type: 'TOKEN',
-      mutability: 'IMMUTABLE'
-    },
-    second: {
-      type: 'TOKEN',
-      mutability: 'MUTABLE'
-    },
-    third: {
-      type: 'TOKEN',
-      mutability: 'SEGMENTED'
-    }
-  }
-};
-function getEntityStrategy(mutability) {
-  return function (contentBlock, callback, contentState) {
-    contentBlock.findEntityRanges(function (character) {
-      var entityKey = character.getEntity();
-      if (entityKey === null) {
-        return false;
-      }
-      return contentState.getEntity(entityKey).getMutability() === mutability;
-    }, callback);
-  };
-}
-function getDecoratedStyle(mutability) {
-  switch (mutability) {
-    case 'IMMUTABLE':
-      return styles.immutable;
-    case 'MUTABLE':
-      return styles.mutable;
-    case 'SEGMENTED':
-      return styles.segmented;
-    default:
-      return null;
-  }
-}
-var styles = {
-  root: {
-    fontFamily: '\'Helvetica\', sans-serif',
-    padding: 20,
-    width: 600
-  },
-  editor: {
-    border: '1px solid #ccc',
-    cursor: 'text',
-    minHeight: 80,
-    padding: 10
-  },
-  button: {
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  immutable: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    padding: '2px 0'
-  },
-  mutable: {
-    backgroundColor: 'rgba(204, 204, 255, 1.0)',
-    padding: '2px 0'
-  },
-  segmented: {
-    backgroundColor: 'rgba(248, 222, 126, 1.0)',
-    padding: '2px 0'
-  }
-};
-var TokenSpan = function TokenSpan(props) {
-  var style = getDecoratedStyle(props.contentState.getEntity(props.entityKey).getMutability());
-  return _react2.default.createElement(
-    'span',
-    { 'data-offset-key': props.offsetkey, style: style },
-    props.children
-  );
-};
-
 var AutoSaveControls = function (_Component) {
   _inherits(AutoSaveControls, _Component);
 
@@ -152,67 +58,124 @@ var AutoSaveControls = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (AutoSaveControls.__proto__ || Object.getPrototypeOf(AutoSaveControls)).call(this, props));
 
-    var decorator = new _draftJs.CompositeDecorator([{
-      strategy: getEntityStrategy('IMMUTABLE'),
-      component: TokenSpan
-    }, {
-      strategy: getEntityStrategy('MUTABLE'),
-      component: TokenSpan
-    }, {
-      strategy: getEntityStrategy('SEGMENTED'),
-      component: TokenSpan
-    }]);
-    var blocks = (0, _draftJs.convertFromRaw)(rawContent);
-
     _this.state = {
-      editorState: _draftJs.EditorState.createWithContent(blocks, decorator),
-
-      visible: false
-    };
+      visible: false,
+      list: [],
+      selectedRowKeys: [],
+      selectedKeyName: ""
+    }, _this.onAutoSaveToggle = _this.onAutoSaveToggle.bind(_this);
+    _this.handleCancel = _this.handleCancel.bind(_this);
+    _this.sendSavedItemToEditor = _this.sendSavedItemToEditor.bind(_this);
+    _this.doDelete = _this.doDelete.bind(_this);
+    _this.selectRow = _this.selectRow.bind(_this);
     return _this;
   }
 
   _createClass(AutoSaveControls, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {}
-  }, {
-    key: 'onClick',
-    value: function onClick() {
-      var content = (0, _utils.stateFromHTML)(this.state.editorState);
-
-      var contentStateWithEntity = content.createEntity('aaa', 'IMMUTABLE', { aaa: 'bbb' });
-      var entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
-      var currentSelectionState = this.state.editorState.getSelection();
-
-      var emojiAddedContent = void 0;
-      var emojiEndPos = 0;
-      var blockSize = 0;
-      var afterRemovalContentState = _draftJs.Modifier.removeRange(content, currentSelectionState, 'backward');
-      return;
-      var targetSelection = afterRemovalContentState.getSelectionAfter();
-      emojiAddedContent = _draftJs.Modifier.insertText(afterRemovalContentState, targetSelection, '{{<span>11111</span>}}', null, entityKey);
-      emojiEndPos = targetSelection.getAnchorOffset();
-      var blockKey = targetSelection.getAnchorKey();
-
-      blockSize = content.getBlockForKey(blockKey).getLength();
-      if (emojiEndPos === blockSize) {
-        emojiAddedContent = _draftJs.Modifier.insertText(emojiAddedContent, emojiAddedContent.getSelectionAfter(), ' ');
-      }
-      var newEditorState = _draftJs.EditorState.push(this.state.editorState, emojiAddedContent, 'insert-emoji');
-      var ccc = _draftJs.EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
-      this.setState({ editorState: ccc });
-    }
-  }, {
     key: 'onAutoSaveToggle',
     value: function onAutoSaveToggle() {
-      this.setState({ visible: true });
+      this.setState({ visible: true, list: [] });
+      this.componentDidMount();
+    }
+  }, {
+    key: 'doDelete',
+    value: function doDelete(text) {
+      window.localStorage.removeItem("$d" + text);
+      var currItem = (0, _find2.default)(this.state.list, function (item) {
+        return item.keyName == text;
+      });
+      if (currItem.key === this.state.selectedRowKeys[0]) {
+        this.state.selectedRowKeys = [];
+        this.forceUpdate();
+      }
+      this.componentDidMount();
+    }
+  }, {
+    key: 'handleCancel',
+    value: function handleCancel(e) {
+      this.setState({ visible: false });
+      this.state.list = [];
+      this.forceUpdate();
+    }
+  }, {
+    key: 'sendSavedItemToEditor',
+    value: function sendSavedItemToEditor() {
+      this.setState({ visible: false });
+      var list = this.state.list.map(function (item) {
+        return item;
+      });
+      var content = _publicDatas.PRO_COMMON.localDB.getter("$d" + this.state.selectedKeyName);
+      this.props.receiveSavedItem(content);
+      this.state.list = [];
+      this.forceUpdate();
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var itemList = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var keyName = localStorage.key(i);
+        if (!~keyName.lastIndexOf("$d")) {
+          continue;
+        }
+
+        itemList.push({ keyName: keyName.replace("$d", "") });
+      }
+
+      _publicDatas.PRO_COMMON.obj.refsKeyTo(itemList);
+      if (!!itemList.length) {
+        this.setState({ list: itemList });
+      } else {
+        this.setState({ list: [] });
+      }
+    }
+  }, {
+    key: 'selectRow',
+    value: function selectRow(record, index) {
+      this.state.selectedRowKeys = [this.state.list[index].key];
+      this.state.selectedKeyName = this.state.list[index].keyName;
+      this.forceUpdate();
     }
   }, {
     key: 'render',
     value: function render() {
-      var className = 'RichEditor-styleButton';
+      var _this2 = this;
 
+      var className = 'RichEditor-styleButton';
+      var that = this;
+
+      var columns = [{
+        title: this.props.lang.previewMsg,
+        dataIndex: 'keyName',
+        key: 'keyName',
+        render: function render(text, record, index) {
+          return text + "...";
+        }
+      }, {
+        title: '',
+        key: 'operation',
+        render: function render(text, record) {
+          return _react2.default.createElement(
+            'a',
+            { onClick: function onClick() {
+                return _this2.doDelete(record.keyName);
+              } },
+            _this2.props.lang.deleteDraftItem
+          );
+        }
+      }];
+
+      var rowSelection = {
+        selectedRowKeys: that.state.selectedRowKeys,
+        onChange: function onChange(selectedRowKeys, selectedRows) {
+          that.state.selectedRowKeys = selectedRowKeys;
+          that.forceUpdate();
+        },
+        onSelect: function onSelect(record, selected, selectedRows) {
+          that.state.selectedKeyName = record.keyName;
+        },
+        type: "radio"
+      };
       return _react2.default.createElement(
         'div',
         { className: 'RichEditor-controls' },
@@ -221,7 +184,7 @@ var AutoSaveControls = function (_Component) {
           null,
           _react2.default.createElement(
             'span',
-            { className: className, onClick: this.onAutoSaveToggle.bind(this), title: this.props.lang.draftTipMsg },
+            { className: className, onClick: that.onAutoSaveToggle, title: this.props.lang.draftTipMsg },
             _react2.default.createElement(_icon2.default, { type: 'editor_safty' })
           )
         ),
@@ -229,14 +192,38 @@ var AutoSaveControls = function (_Component) {
           _modal2.default,
           {
             title: this.props.lang.draftModalTitle,
-            visible: this.state.visible,
-            closable: true,
-            width: 600
-          },
+            visible: that.state.visible,
+            closable: false,
+            width: 600,
+            footer: [_react2.default.createElement(
+              _button2.default,
+              { key: 'back', size: 'large', onClick: that.handleCancel },
+              '  ',
+              this.props.lang.cancelText,
+              '  '
+            ), _react2.default.createElement(
+              _popconfirm2.default,
+              { placement: 'right', title: this.props.lang.confirmUseDraft, onConfirm: that.sendSavedItemToEditor },
+              '\xA0\xA0\xA0\xA0',
+              _react2.default.createElement(
+                _button2.default,
+                { key: 'submit', type: 'primary', size: 'large', disabled: !that.state.selectedRowKeys.length },
+                ' ',
+                this.props.lang.OKText,
+                ' '
+              )
+            )] },
+          _react2.default.createElement(_table2.default, {
+            rowSelection: rowSelection,
+            onRowClick: that.selectRow,
+            columns: columns,
+            dataSource: that.state.list,
+            size: 'small'
+          }),
           _react2.default.createElement(
-            'div',
-            { onClick: this.onClick.bind(this) },
-            '\u6D4B\u8BD51111'
+            'span',
+            { style: { color: "#ccc" } },
+            this.props.lang.draftCautionMsg
           )
         )
       );

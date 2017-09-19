@@ -402,7 +402,7 @@ var EditorConcist = function (_React$Component) {
 
       var content = editorState.getCurrentContent();
 
-      console.log(content);
+
       var contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', val);
       var entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
@@ -931,13 +931,11 @@ var EditorConcist = function (_React$Component) {
             onToggle: this.removeLink,
             lang: _i18n.lang[this.state.language]
           }),
-          ' ',
           this.state.showMarkdownSource == false && this.props.autoSave && _react2.default.createElement(_autoSaveList2.default, { initContent: this.state.initContent,
             onChange: this.onChange,
             receiveSavedItem: this.choiceAutoSave,
             lang: _i18n.lang[this.state.language]
           }),
-          ' ',
           this.props.fullScreen && _react2.default.createElement(_cookieControls.OpenFull, { editorState: editorState,
             onToggle: this.openFull,
             coverTitle: this.state.openFullTest,

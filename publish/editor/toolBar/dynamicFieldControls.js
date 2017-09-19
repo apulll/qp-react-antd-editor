@@ -207,7 +207,7 @@ var AddField = function (_Component) {
           { className: 'RichEditor-controls' },
           _react2.default.createElement(
             'span',
-            { className: 'RichEditor-styleButton', onClick: this.props.onToggle, title: '\u6DFB\u52A0\u52A8\u6001\u5B57\u6BB5' },
+            { className: 'RichEditor-styleButton', title: '\u6DFB\u52A0\u52A8\u6001\u5B57\u6BB5' },
             _react2.default.createElement(_icon2.default, { type: 'ellipsis' })
           )
         )
