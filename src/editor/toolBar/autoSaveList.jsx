@@ -5,220 +5,141 @@ import {
   Popconfirm,
   message,
   Table,
-  Icon,
-  Tree
+  Icon
 } from 'antd';
-import {convertFromRaw,
-        convertToRaw,
-        CompositeDecorator,
-        ContentState,
-        Editor,
-        EditorState,
-        Modifier,} from "draft-js"
 import {PRO_COMMON} from '../../global/supports/publicDatas';
 import find from "lodash/find";
-import ImageDecorator from "../decorators/ImageDecorator";
-import {stateToHTML,stateFromHTML,stateToMD,stateFromMD} from '../utils';
-const TreeNode = Tree.TreeNode;
-const rawContent = {
-        blocks: [
-          {
-            text: (
-              'This is an "immutable" entity: Superman. Deleting any ' +
-              'characters will delete the entire entity. Adding characters ' +
-              'will remove the entity from the range.'
-            ),
-            type: 'unstyled',
-            entityRanges: [{offset: 31, length: 3, key: 'first'}],
-          },
-          {
-            text: '',
-            type: 'unstyled',
-          },
-          {
-            text: (
-              'This is a "mutable" entity: Batman. Characters may be added ' +
-              'and removed.'
-            ),
-            type: 'unstyled',
-            entityRanges: [{offset: 28, length: 6, key: 'second'}],
-          },
-          {
-            text: '',
-            type: 'unstyled',
-          },
-          {
-            text: (
-              'This is a "segmented" entity: Green Lantern. Deleting any ' +
-              'characters will delete the current "segment" from the range. ' +
-              'Adding characters will remove the entire entity from the range.'
-            ),
-            type: 'unstyled',
-            entityRanges: [{offset: 30, length: 13, key: 'third'}],
-          },
-        ],
-
-        entityMap: {
-          first: {
-            type: 'TOKEN',
-            mutability: 'IMMUTABLE',
-          },
-          second: {
-            type: 'TOKEN',
-            mutability: 'MUTABLE',
-          },
-          third: {
-            type: 'TOKEN',
-            mutability: 'SEGMENTED',
-          },
-        },
-      };
-function getEntityStrategy(mutability) {
-        return function(contentBlock, callback, contentState) {
-          contentBlock.findEntityRanges(
-            (character) => {
-              const entityKey = character.getEntity();
-              if (entityKey === null) {
-                return false;
-              }
-              return contentState.getEntity(entityKey).getMutability() === mutability;
-            },
-            callback
-          );
-        };
-      }
-function getDecoratedStyle(mutability) {
-        switch (mutability) {
-          case 'IMMUTABLE': return styles.immutable;
-          case 'MUTABLE': return styles.mutable;
-          case 'SEGMENTED': return styles.segmented;
-          default: return null;
-        }
-      }
-const styles = {
-        root: {
-          fontFamily: '\'Helvetica\', sans-serif',
-          padding: 20,
-          width: 600,
-        },
-        editor: {
-          border: '1px solid #ccc',
-          cursor: 'text',
-          minHeight: 80,
-          padding: 10,
-        },
-        button: {
-          marginTop: 10,
-          textAlign: 'center',
-        },
-        immutable: {
-          backgroundColor: 'rgba(0, 0, 0, 0.2)',
-          padding: '2px 0',
-        },
-        mutable: {
-          backgroundColor: 'rgba(204, 204, 255, 1.0)',
-          padding: '2px 0',
-        },
-        segmented: {
-          backgroundColor: 'rgba(248, 222, 126, 1.0)',
-          padding: '2px 0',
-        },
-      };
-const TokenSpan = (props) => {
-        const style = getDecoratedStyle(
-          props.contentState.getEntity(props.entityKey).getMutability()
-        );
-        return (
-          <span data-offset-key={props.offsetkey} style={style}>
-            {props.children}
-          </span>
-        );
-      };
-
 class AutoSaveControls extends Component {
   constructor(props) {
     super(props);
-
-    const decorator = new CompositeDecorator([
-          {
-            strategy: getEntityStrategy('IMMUTABLE'),
-            component: TokenSpan,
-          },
-          {
-            strategy: getEntityStrategy('MUTABLE'),
-            component: TokenSpan,
-          },
-          {
-            strategy: getEntityStrategy('SEGMENTED'),
-            component: TokenSpan,
-          },
-        ]);
-    const blocks = convertFromRaw(rawContent);
-
     this.state = {
-      editorState: EditorState.createWithContent(blocks,decorator),
-      //editorState: this.props.initContent,
-      visible: false
-    };
+      visible: false,
+      list: [],
+      selectedRowKeys: [],
+      selectedKeyName: ""
+    },
+    this.onAutoSaveToggle = this.onAutoSaveToggle.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.sendSavedItemToEditor = this.sendSavedItemToEditor.bind(this);
+    this.doDelete = this.doDelete.bind(this);
+    this.selectRow = this.selectRow.bind(this);
   }
-  componentDidMount(){
 
-    //this.props.receiveSavedItem(stateToHTML(this.state.editorState.getCurrentContent()))
+  onAutoSaveToggle() {
+    this.setState({visible: true, list: []});
+    this.componentDidMount();
   }
-  onClick(){
-    const content = stateFromHTML(this.state.editorState);
-    //const content = this.state.editorState;
-    const contentStateWithEntity = content.createEntity('aaa', 'IMMUTABLE', { aaa: 'bbb' });
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-    //const currentSelectionState = this.state.editorState.getSelection();
-    const currentSelectionState = this.state.editorState.getSelection();
-
-    let emojiAddedContent;
-    let emojiEndPos = 0;
-    let blockSize = 0;
-    const afterRemovalContentState = Modifier.removeRange(content,currentSelectionState,'backward');
-    return
-    const targetSelection = afterRemovalContentState.getSelectionAfter();
-    emojiAddedContent = Modifier.insertText(afterRemovalContentState,targetSelection,'{{<span>11111</span>}}',null,entityKey,);
-    emojiEndPos = targetSelection.getAnchorOffset();
-    const blockKey = targetSelection.getAnchorKey();
-
-    blockSize = content.getBlockForKey(blockKey).getLength();
-    if (emojiEndPos === blockSize) {
-      emojiAddedContent = Modifier.insertText(
-        emojiAddedContent,
-        emojiAddedContent.getSelectionAfter(),
-        ' ',
-      );
+  doDelete(text) {
+    window.localStorage.removeItem("$d" + text);
+    let currItem=find(this.state.list,item=>item.keyName==text)
+    if (currItem.key===this.state.selectedRowKeys[0]) {
+      this.state.selectedRowKeys=[];
+      this.forceUpdate();
     }
-    const newEditorState = EditorState.push(this.state.editorState,emojiAddedContent,'insert-emoji');
-    const ccc = EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
-    this.setState({editorState:ccc})
+    this.componentDidMount();
   }
-  onAutoSaveToggle(){
-    this.setState({visible: true})
+  handleCancel(e) {
+    // console.log(e);
+    this.setState({visible: false});
+    this.state.list = [];
+    this.forceUpdate();
+  }
+  sendSavedItemToEditor() {
+    this.setState({visible: false});
+    let list = this.state.list.map((item) => {
+      return item;
+    });
+    let content=PRO_COMMON.localDB.getter("$d"+this.state.selectedKeyName);//window.localStorage.getItem("$d"+this.state.selectedKeyName);
+//console.log("content",content)
+    this.props.receiveSavedItem(content);
+    this.state.list = [];
+    this.forceUpdate();
+  }
+  componentDidMount() {
+//console.log("componentDidMount!");
+    let itemList = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      let keyName = localStorage.key(i);
+      if (!~ keyName.lastIndexOf("$d")) {
+        continue;
+      }
+  //console.log(keyName);
+      itemList.push({keyName: keyName.replace("$d","")})
+    }
+
+    PRO_COMMON.obj.refsKeyTo(itemList)
+    if (!!itemList.length) {
+  //console.log("itemList", itemList);
+      this.setState({list: itemList});
+    } else {
+      this.setState({list: []});
+    }
+  }
+  selectRow(record, index) {
+//console.log("selectRow!",record, index)
+    this.state.selectedRowKeys = [this.state.list[index].key];
+    this.state.selectedKeyName = this.state.list[index].keyName;
+    this.forceUpdate();
   }
   render() {
     let className = 'RichEditor-styleButton';
+    let that = this;
 
+    const columns = [
+      {
+        title: this.props.lang.previewMsg,
+        dataIndex: 'keyName',
+        key: 'keyName',
+        render: (text, record, index) => (text + "...")
+      }, {
+        title: '',
+        key: 'operation',
+        render: (text, record) => (
+          <a onClick={() => this.doDelete(record.keyName)}>{this.props.lang.deleteDraftItem}</a>
+        )
+      }
+    ];
+
+    const rowSelection = {
+      selectedRowKeys: that.state.selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+    //console.log("onChange", selectedRowKeys);
+        that.state.selectedRowKeys = selectedRowKeys;
+        that.forceUpdate();
+      },
+      onSelect: function(record, selected, selectedRows) {
+    //console.log("onSelect", record.keyName);
+        that.state.selectedKeyName = record.keyName;
+      },
+      type: "radio"
+    };
     return (
       <div className="RichEditor-controls">
         <span>
-            <span className={className} onClick={this.onAutoSaveToggle.bind(this)} title={this.props.lang.draftTipMsg}><Icon type="editor_safty"/>
+            <span className={className} onClick={that.onAutoSaveToggle} title={this.props.lang.draftTipMsg}><Icon type="editor_safty"/>
             </span>
         </span>
         <Modal
           title={this.props.lang.draftModalTitle}
-          visible={this.state.visible}
-          closable={true}
+          visible={that.state.visible}
+          closable={false}
           width={600}
-        >
-              <div onClick={this.onClick.bind(this)}>测试1111</div>
+          footer={[< Button key = "back" size = "large" onClick = {
+            that.handleCancel
+          } >  {this.props.lang.cancelText}  < /Button>,
+            <Popconfirm placement="right" title={this.props.lang.confirmUseDraft} onConfirm={that.sendSavedItemToEditor}>
+              &nbsp;&nbsp;&nbsp;&nbsp;<Button key="submit" type="primary" size="large" disabled={!that.state.selectedRowKeys.length}> {this.props.lang.OKText} </Button >
+            </Popconfirm>]}>
+          <Table
+            rowSelection={rowSelection}
+            onRowClick={that.selectRow}
+            columns={columns}
+            dataSource={that.state.list}
+            size="small"
+            /><span style={{color:"#ccc"}}>{this.props.lang.draftCautionMsg}</span>
         </Modal>
-
       </div>
     )
   }
 }
-
 module.exports = AutoSaveControls;

@@ -361,7 +361,7 @@ class EditorConcist extends React.Component {
 
       const content = editorState.getCurrentContent();
       // contentState = convertToRaw(content);
-      console.log(val,'val')
+
       const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', val);
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
@@ -377,16 +377,12 @@ class EditorConcist extends React.Component {
         'backward'
       );
 
+      const txt = '<'+val.txt+ val.field + '>'
       const targetSelection = afterRemovalContentState.getSelectionAfter();
-
-      console.log(val,'val')
-      const txt = this.tohanzi(val.txt)
-
-
       emojiAddedContent = Modifier.insertText(
         afterRemovalContentState,
         targetSelection,
-        val.txt, //可动态变化 通过传值
+        txt, //可动态变化 通过传值
         null,
         entityKey,
       );
@@ -1039,7 +1035,8 @@ class EditorConcist extends React.Component {
                                       lang = {
                                         lang[this.state.language]
                                       }
-                                      />} {
+                                      />}
+                                      {
                                         this.state.showMarkdownSource == false && this.props.autoSave && <
                                           AutoSaveControls initContent = {
                                             this.state.initContent
@@ -1053,7 +1050,8 @@ class EditorConcist extends React.Component {
                                         lang = {
                                           lang[this.state.language]
                                         }
-                                        />} {
+                                        />}
+                                        {
                                           this.props.fullScreen && < OpenFull editorState = {
                                             editorState
                                           }

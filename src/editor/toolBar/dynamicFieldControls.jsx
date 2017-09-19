@@ -130,7 +130,7 @@ class AddField extends Component {
         overlayStyle={{maxWidth:400}}
       >
         <div className="RichEditor-controls">
-          <span className="RichEditor-styleButton" onClick={this.props.onToggle} title='添加动态字段'>
+          <span className="RichEditor-styleButton"  title='添加动态字段'>
             <Icon type="ellipsis" />
           </span>
         </div>

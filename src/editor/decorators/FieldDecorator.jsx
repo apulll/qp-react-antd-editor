@@ -22,7 +22,7 @@ function Field(props_: Props): React.Element {
   const { id, field,txt } = Entity.get(props_.entityKey).getData();
   console.log(field,'field')
   return (
-    <span data-id={id} data-field={field} >{txt}</span>
+    <Tag data-id={id} data-field={field} >{props_.children}</Tag>
   );
 
 

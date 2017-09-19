@@ -53,7 +53,7 @@ var Test = function (_React$Component) {
     var _this2 = _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
 
     _this2.state = {
-      htmlContent: '<h1>\u4F60\u597D!</h1>',
+      htmlContent: '<p >\u4F60\u597D!\u7684\u6211\u53D1\u6CD5\u5927\u5E08&lt;\u5DE5\u4F5C\u5C97\u4F4D{work_station}&gt;\u5085\u58EB\u5927\u592B\u5927\u5E08\u5085</p>',
       markdownContent: "## HEAD 2 \n markdown examples \n ``` welcome ```",
       rawContent: '{"entityMap":{"0":{"type":"image","mutability":"IMMUTABLE","data":{"src":"https://image.qiluyidian.mobi/4305350813991067' + '8747.jpg"}},"1":{"type":"image","mutability":"IMMUTABLE","data":{"src":"https://image.qiluyidian.mobi/430535081399106787' + '47.jpg"}}},"blocks":[{"key":"fr2lj","text":"Yankees, Peeking at the Red Sox, Will Soon Get an Eyeful","type":"header-one","depth":0,"inlineStyleRanges":[],"entityRanges":[]' + ',"data":{}},{"key":"90kdv","text":"Leaning over the railing from his perch on the top step of the first-base dugout this past weekend in Cleveland, Yankees Manager Joe Girardi did not have to divert his gaze to catch glimpses of the out-of-town scoreboard.","type":"unstyled","depth":0,"inlin' + 'eStyleRanges":[],"entityRanges":[],"data":{}},{"key":"b60ni","text":"Whenever Girardi stole a glance, there was rarely any good news for the Yankees. While Girardi’s charges were clawing their way to a split of their four-game series against the formidable Indians, the Boston Red Sox were plowing past the rebuilding Chicago White Sox, sweeping four games at Fenway Park.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"eui4h","text' + '":"The Yankees, who trail the Red Sox by three games in the American League East, will have their rivals right in front of them on three of the next four weekends, beginning Friday night at Yankee Stadium.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],' + '"data":{}},{"key":"29t6l","text":" ","type":"atomic","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"lengt' + 'h":1,"key":0}],"data":{}},{"key":"7ujeo","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],' + '"data":{}},{"key":"3n9d4","text":" ","type":"atomic","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"lengt' + 'h":1,"key":1}],"data":{}},{"key":"9r0k2","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],' + '"data":{}}]}',
       responseList: []
@@ -70,7 +70,9 @@ var Test = function (_React$Component) {
 
   _createClass(Test, [{
     key: 'receiveHtml',
-    value: function receiveHtml(content) {}
+    value: function receiveHtml(content, content2) {
+      console.log(content, content2, 'content');
+    }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {}
@@ -196,7 +198,18 @@ var Test = function (_React$Component) {
           field: true,
           fieldProps: _field2.default,
           convertFormat: 'html'
-        })
+        }),
+        _react2.default.createElement(_index2.default, {
+          active: true,
+          importContent: this.state.rawContent,
+          cbReceiver: this.receiveRaw,
+          image: false,
+          video: false,
+          audio: false,
+          convertFormat: 'raw',
+          field: true,
+          fieldProps: _field2.default,
+          lang: 'zh-CN' })
       );
     }
   }]);
