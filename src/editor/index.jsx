@@ -361,11 +361,8 @@ class EditorConcist extends React.Component {
 
       const content = editorState.getCurrentContent();
       // contentState = convertToRaw(content);
-      console.log(content)
-      const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', {
-        id: val.id ,//可动态变化 通过传值
-        field: val.field //可动态变化 通过传值
-      });
+      console.log(val,'val')
+      const contentStateWithEntity = content.createEntity('FIELD', 'IMMUTABLE', val);
       const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
       console.log(entityKey, 'entityKey')

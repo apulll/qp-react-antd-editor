@@ -19,10 +19,10 @@ type EntityRangeCallback = (start: number, end: number) => void;
 function Field(props_: Props): React.Element {
 
 
-  const { id, field } = Entity.get(props_.entityKey).getData();
+  const { id, field,txt } = Entity.get(props_.entityKey).getData();
   console.log(field,'field')
   return (
-    <Tag data-id={id} data-field={field}>{props_.children}</Tag>
+    <span data-id={id} data-field={field} >{txt}</span>
   );
 
 
