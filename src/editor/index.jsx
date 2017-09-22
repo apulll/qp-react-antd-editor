@@ -377,7 +377,7 @@ class EditorConcist extends React.Component {
         'backward'
       );
 
-      const txt = '<'+val.txt+ val.field + '>'
+      const txt = val.field
       const targetSelection = afterRemovalContentState.getSelectionAfter();
       emojiAddedContent = Modifier.insertText(
         afterRemovalContentState,
