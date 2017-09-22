@@ -414,7 +414,7 @@ var EditorConcist = function (_React$Component) {
 
       var afterRemovalContentState = _draftJs.Modifier.removeRange(content, currentSelectionState, 'backward');
 
-      var txt = '<' + val.txt + val.field + '>';
+      var txt = val.field;
       var targetSelection = afterRemovalContentState.getSelectionAfter();
       emojiAddedContent = _draftJs.Modifier.insertText(afterRemovalContentState, targetSelection, txt, null, entityKey);
 
