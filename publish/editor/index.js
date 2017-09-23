@@ -305,7 +305,7 @@ var EditorConcist = function (_React$Component) {
 
       this.state.autoSaveFun = setInterval(function () {
         _this2.handleKeyCommand("editor-save");
-      }, 60000);
+      }, 2000);
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -550,7 +550,7 @@ var EditorConcist = function (_React$Component) {
         }
         var start30Text = newText.substr(0, 30);
         _publicDatas.PRO_COMMON.localDB.setter("$d" + start30Text, content);
-        _message2.default.success(_i18n.lang[this.state.language].successToDraftBox, 5);
+
         return true;
       } else if (command === "editor-paste") {
         return true;

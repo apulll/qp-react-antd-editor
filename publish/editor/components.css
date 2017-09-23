@@ -1,9 +1,9 @@
-
-.editorHidden{
+.editorHidden {
   z-index: 10;
   overflow: hidden;
   position: relative;
 }
+
 .editor_container {
   border: 1px solid #E9E9E9;
   background-color: #F9F9F9;
@@ -30,6 +30,15 @@
   color: #999;
   font-style: italic;
   text-align: center;
+}
+/*.public-DraftEditor-content>div>div>div>div:before{content:"¶"}*/
+.editor-inline-image img,
+.editor-inline-video video,
+.editor-inline-audio audio {
+  padding: 0 5px;
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .RichEditor-root {
@@ -125,7 +134,13 @@
   display: inline;
   border-left: 1px solid #EEE;
 }
-
+.RichEditor-controls .ant-btn{
+  transition:none!important;
+  -o-transition:none!important;
+  -ms-transition:none!important;
+  -moz-transition:none!important;
+  -webkit-transition:none!important;
+}
 .RichEditor-controls-split {
   padding-right: 20px
 }
@@ -154,9 +169,11 @@
 .RichEditor-styleButton i.anticon {
   margin-left: 0px !important;
 }
+
 .RichEditor-activeButton {
   color: #fff;
   border-radius: 5px;
+  /*Can not use the default color, otherwise it will replace the custom theme color*/
 }
 
 .RichEditor-color {
@@ -171,5 +188,9 @@
 }
 
 .RichEditor-color-active {}
-
+.hq-editor-field-wrapper .ant-radio-wrapper {
+    width:45%;
+}
 .RichEditor-color:nth-child(2n+1) {}
+#text-editor-affix>.ant-affix{background-color:#fff!important;}
+

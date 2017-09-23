@@ -159,7 +159,7 @@ var AddField = function (_Component) {
 
         return _react2.default.createElement(
           'div',
-          { key: item.id, style: { marginBottom: 20 } },
+          { key: item.id, style: { marginBottom: 20 }, className: 'hq-editor-field-wrapper' },
           _react2.default.createElement(
             'h3',
             null,
