@@ -52,6 +52,9 @@
   border-top: 1px solid #DDD;
   cursor: text;
   font-size: 16px;
+      max-height: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .public-DraftStyleDefault-ul {
@@ -193,4 +196,3 @@
 }
 .RichEditor-color:nth-child(2n+1) {}
 #text-editor-affix>.ant-affix{background-color:#fff!important;}
-
