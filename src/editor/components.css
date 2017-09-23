@@ -191,3 +191,8 @@
 
 .RichEditor-color:nth-child(2n+1) {}
 #text-editor-affix>.ant-affix{background-color:#fff!important;}
+.hq-editor-field-wrapper .ant-radio-wrapper {
+   
+    width:45%;
+  
+}

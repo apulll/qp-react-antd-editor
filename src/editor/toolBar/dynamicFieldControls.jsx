@@ -99,7 +99,7 @@ class AddField extends Component {
     const fieldTpl = fieldData ? fieldData.map( (item) => {
 
       return (
-          <div key={item.id} style={{ marginBottom:20 }}>
+          <div key={item.id} style={{ marginBottom:20 }} className='hq-editor-field-wrapper'>
               <h3>{item.title}：</h3>
               <RadioGroup options={item.child} onChange={this.onChange1} value={this.state.value} />
 
