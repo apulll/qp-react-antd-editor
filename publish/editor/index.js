@@ -305,7 +305,7 @@ var EditorConcist = function (_React$Component) {
 
       this.state.autoSaveFun = setInterval(function () {
         _this2.handleKeyCommand("editor-save");
-      }, 2000);
+      }, 60000);
     }
   }, {
     key: 'componentWillReceiveProps',
