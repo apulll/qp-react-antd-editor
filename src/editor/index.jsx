@@ -258,7 +258,7 @@ class EditorConcist extends React.Component {
         // Automaticly save text to draft-box every minute.
         //每分钟自动保存草稿一次
         this.handleKeyCommand("editor-save");
-      }, 2000);
+      }, 60000);
     }
     // This hook function will be called while you edit text in editor.
     // 此钩子用作编辑时候的回调
