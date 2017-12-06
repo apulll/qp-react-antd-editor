@@ -44,6 +44,10 @@ var _uniqBy = require('lodash/uniqBy');
 
 var _uniqBy2 = _interopRequireDefault(_uniqBy);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -320,24 +324,24 @@ var UploadImage = function (_Component) {
 }(_react.Component);
 
 UploadImage.propTypes = {
-  cbReceiver: _react2.default.PropTypes.func.isRequired,
-  limit: _react2.default.PropTypes.number,
-  isMultiple: _react2.default.PropTypes.bool,
-  isShowUploadList: _react2.default.PropTypes.bool,
+  cbReceiver: _propTypes2.default.func.isRequired,
+  limit: _propTypes2.default.number,
+  isMultiple: _propTypes2.default.bool,
+  isShowUploadList: _propTypes2.default.bool,
   fileType: UploadImage.prototype.supportFileType,
-  description: _react2.default.PropTypes.string,
-  fileList: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({ url: _react2.default.PropTypes.string.isRequired, thumbUrl: _react2.default.PropTypes.string, name: _react2.default.PropTypes.string })),
-  uploadConfig: _react2.default.PropTypes.shape({
-    QINIU_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_IMG_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_PFOP: _react2.default.PropTypes.shape({
-      url: _react2.default.PropTypes.string.isRequired
+  description: _propTypes2.default.string,
+  fileList: _propTypes2.default.arrayOf(_propTypes2.default.shape({ url: _propTypes2.default.string.isRequired, thumbUrl: _propTypes2.default.string, name: _propTypes2.default.string })),
+  uploadConfig: _propTypes2.default.shape({
+    QINIU_URL: _propTypes2.default.string.isRequired,
+    QINIU_IMG_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_PFOP: _propTypes2.default.shape({
+      url: _propTypes2.default.string.isRequired
     }),
-    QINIU_VIDEO_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_FILE_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_IMG_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_VIDEO_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_FILE_URL: _react2.default.PropTypes.string.isRequired
+    QINIU_VIDEO_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_FILE_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_IMG_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_VIDEO_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_FILE_URL: _propTypes2.default.string.isRequired
   })
 };
 
