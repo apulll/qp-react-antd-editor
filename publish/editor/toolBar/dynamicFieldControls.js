@@ -1,30 +1,20 @@
 'use strict';
 
-var _css = require('antd/lib/popover/style/css');
-
 var _popover = require('antd/lib/popover');
 
 var _popover2 = _interopRequireDefault(_popover);
-
-var _css2 = require('antd/lib/icon/style/css');
 
 var _icon = require('antd/lib/icon');
 
 var _icon2 = _interopRequireDefault(_icon);
 
-var _css3 = require('antd/lib/button/style/css');
-
 var _button = require('antd/lib/button');
 
 var _button2 = _interopRequireDefault(_button);
 
-var _css4 = require('antd/lib/radio/style/css');
-
 var _radio = require('antd/lib/radio');
 
 var _radio2 = _interopRequireDefault(_radio);
-
-var _css5 = require('antd/lib/tabs/style/css');
 
 var _tabs = require('antd/lib/tabs');
 

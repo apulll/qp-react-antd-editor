@@ -542,7 +542,7 @@ class EditorConcist extends React.Component {
         }
         let start30Text = newText.substr(0, 30);
         PRO_COMMON.localDB.setter("$d" + start30Text, content);
-        // message.success(lang[this.state.language].successToDraftBox, 5)
+        message.success(lang[this.state.language].successToDraftBox, 5)
         return true;
       } else if(command === "editor-paste") {
         return true;

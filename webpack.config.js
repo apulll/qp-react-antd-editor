@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+const themer = require('./theme.js')()
 module.exports = {
   //entry:path.resolve('','src/main.js'),
   resolve: {
@@ -43,7 +44,7 @@ module.exports = {
       loader: "url?limit=8192"
     }, {
       test: /\.less$/,
-      loader: 'style!css!less'
+      loader: `style!css!less?{"sourceMap":true,"modifyVars":${JSON.stringify(themer)}}`
     }, {
       test: /.css$/, // Only .css files
       loader: 'style!css' // Run both loaders

@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _css = require('antd/lib/tag/style/css');
-
 var _tag = require('antd/lib/tag');
 
 var _tag2 = _interopRequireDefault(_tag);
