@@ -5,7 +5,7 @@ import findIndex from "lodash/findIndex";
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
 import uniqBy from "lodash/uniqBy";
-
+import PropTypes from 'prop-types';
 /*
  * 调用示例：
  * <UploadImage cbReceiver={this.getFile} isMultiple={true}/>
@@ -254,24 +254,24 @@ class UploadImage extends Component {
 }
 
 UploadImage.propTypes = {
-  cbReceiver: React.PropTypes.func.isRequired,
-  limit: React.PropTypes.number,
-  isMultiple: React.PropTypes.bool,
-  isShowUploadList: React.PropTypes.bool,
+  cbReceiver: PropTypes.func.isRequired,
+  limit: PropTypes.number,
+  isMultiple: PropTypes.bool,
+  isShowUploadList: PropTypes.bool,
   fileType: UploadImage.prototype.supportFileType,
-  description: React.PropTypes.string,
-  fileList: React.PropTypes.arrayOf(React.PropTypes.shape({url: React.PropTypes.string.isRequired, thumbUrl: React.PropTypes.string, name: React.PropTypes.string})),
-  uploadConfig:React.PropTypes.shape({
-    QINIU_URL: React.PropTypes.string.isRequired,
-    QINIU_IMG_TOKEN_URL: React.PropTypes.string.isRequired,
-    QINIU_PFOP:React.PropTypes.shape({
-      url: React.PropTypes.string.isRequired
+  description: PropTypes.string,
+  fileList: PropTypes.arrayOf(PropTypes.shape({url: PropTypes.string.isRequired, thumbUrl: PropTypes.string, name: PropTypes.string})),
+  uploadConfig:PropTypes.shape({
+    QINIU_URL: PropTypes.string.isRequired,
+    QINIU_IMG_TOKEN_URL: PropTypes.string.isRequired,
+    QINIU_PFOP:PropTypes.shape({
+      url: PropTypes.string.isRequired
     }),
-    QINIU_VIDEO_TOKEN_URL: React.PropTypes.string.isRequired,
-    QINIU_FILE_TOKEN_URL: React.PropTypes.string.isRequired,
-    QINIU_DOMAIN_IMG_URL: React.PropTypes.string.isRequired,
-    QINIU_DOMAIN_VIDEO_URL: React.PropTypes.string.isRequired,
-    QINIU_DOMAIN_FILE_URL: React.PropTypes.string.isRequired
+    QINIU_VIDEO_TOKEN_URL: PropTypes.string.isRequired,
+    QINIU_FILE_TOKEN_URL: PropTypes.string.isRequired,
+    QINIU_DOMAIN_IMG_URL: PropTypes.string.isRequired,
+    QINIU_DOMAIN_VIDEO_URL: PropTypes.string.isRequired,
+    QINIU_DOMAIN_FILE_URL: PropTypes.string.isRequired
    })
 };
 
