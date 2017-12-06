@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var theme = require('./theme.js')();
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
   resolve: {
@@ -40,7 +41,7 @@ module.exports = {
       loader: "url?limit=8192"
     }, {
       test: /\.less$/,
-      loader: 'style!css!less'
+      loader: `style!css!less?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`
     }, {
       test: /.css$/, // Only .css files
       loader: 'style!css' // Run both loaders

@@ -5,7 +5,7 @@ import findIndex from "lodash/findIndex";
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
 import uniqBy from "lodash/uniqBy";
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 /*
  * 调用示例：
  * <UploadImage cbReceiver={this.getFile} isMultiple={true}/>

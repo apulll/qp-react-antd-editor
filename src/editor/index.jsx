@@ -38,6 +38,7 @@ import {
   // Affix,
   Icon
 } from 'antd';
+import PropTypes from 'prop-types'
 import {
   stateToHTML,
   stateFromHTML,
@@ -1270,36 +1271,36 @@ class EditorConcist extends React.Component {
                                       };
 
                                       EditorConcist.propTypes = {
-                                        active: React.PropTypes.bool,
-                                        importContent: React.PropTypes.string,
-                                        cbReceiver: React.PropTypes.func.isRequired,
-                                        undoRedo: React.PropTypes.bool,
-                                        removeStyle: React.PropTypes.bool,
-                                        pasteNoStyle: React.PropTypes.bool,
-                                        blockStyle: React.PropTypes.bool,
-                                        alignment: React.PropTypes.bool,
-                                        inlineStyle: React.PropTypes.bool,
-                                        color: React.PropTypes.bool,
-                                        image: React.PropTypes.bool,
-                                        video: React.PropTypes.bool,
-                                        audio: React.PropTypes.bool,
-                                        urls: React.PropTypes.bool,
-                                        field: React.PropTypes.bool,
-                                        autoSave: React.PropTypes.bool,
-                                        fullScreen: React.PropTypes.bool,
-                                        uploadConfig: React.PropTypes.shape({
-                                          QINIU_URL: React.PropTypes.string.isRequired,
-                                          QINIU_IMG_TOKEN_URL: React.PropTypes.string.isRequired,
-                                          QINIU_PFOP: React.PropTypes.shape({
-                                            url: React.PropTypes.string.isRequired
+                                        active: PropTypes.bool,
+                                        importContent: PropTypes.string,
+                                        cbReceiver: PropTypes.func.isRequired,
+                                        undoRedo: PropTypes.bool,
+                                        removeStyle: PropTypes.bool,
+                                        pasteNoStyle: PropTypes.bool,
+                                        blockStyle: PropTypes.bool,
+                                        alignment: PropTypes.bool,
+                                        inlineStyle: PropTypes.bool,
+                                        color: PropTypes.bool,
+                                        image: PropTypes.bool,
+                                        video: PropTypes.bool,
+                                        audio: PropTypes.bool,
+                                        urls: PropTypes.bool,
+                                        field: PropTypes.bool,
+                                        autoSave: PropTypes.bool,
+                                        fullScreen: PropTypes.bool,
+                                        uploadConfig: PropTypes.shape({
+                                          QINIU_URL: PropTypes.string.isRequired,
+                                          QINIU_IMG_TOKEN_URL: PropTypes.string.isRequired,
+                                          QINIU_PFOP: PropTypes.shape({
+                                            url: PropTypes.string.isRequired
                                           }),
-                                          QINIU_VIDEO_TOKEN_URL: React.PropTypes.string.isRequired,
-                                          QINIU_FILE_TOKEN_URL: React.PropTypes.string.isRequired,
-                                          QINIU_DOMAIN_IMG_URL: React.PropTypes.string.isRequired,
-                                          QINIU_DOMAIN_VIDEO_URL: React.PropTypes.string.isRequired,
-                                          QINIU_DOMAIN_FILE_URL: React.PropTypes.string.isRequired
+                                          QINIU_VIDEO_TOKEN_URL: PropTypes.string.isRequired,
+                                          QINIU_FILE_TOKEN_URL: PropTypes.string.isRequired,
+                                          QINIU_DOMAIN_IMG_URL: PropTypes.string.isRequired,
+                                          QINIU_DOMAIN_VIDEO_URL: PropTypes.string.isRequired,
+                                          QINIU_DOMAIN_FILE_URL: PropTypes.string.isRequired
                                         }),
-                                        convertFormat: React.PropTypes.oneOf(['html', 'markdown', 'raw']),
+                                        convertFormat: PropTypes.oneOf(['html', 'markdown', 'raw']),
                                       }
                                       EditorConcist.defaultProps = {
                                         undoRedo: true,
