@@ -1,12 +1,18 @@
 'use strict';
 
+var _style4 = require('antd/lib/modal/style');
+
 var _modal = require('antd/lib/modal');
 
 var _modal2 = _interopRequireDefault(_modal);
 
+var _style5 = require('antd/lib/input/style');
+
 var _input = require('antd/lib/input');
 
 var _input2 = _interopRequireDefault(_input);
+
+var _style6 = require('antd/lib/message/style');
 
 var _message = require('antd/lib/message');
 
@@ -31,6 +37,10 @@ var _reactDom = require('react-dom');
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _draftJs = require('draft-js');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _utils = require('./utils');
 
@@ -1089,36 +1099,36 @@ var Media = function Media(props) {
 };
 
 EditorConcist.propTypes = {
-  active: _react2.default.PropTypes.bool,
-  importContent: _react2.default.PropTypes.string,
-  cbReceiver: _react2.default.PropTypes.func.isRequired,
-  undoRedo: _react2.default.PropTypes.bool,
-  removeStyle: _react2.default.PropTypes.bool,
-  pasteNoStyle: _react2.default.PropTypes.bool,
-  blockStyle: _react2.default.PropTypes.bool,
-  alignment: _react2.default.PropTypes.bool,
-  inlineStyle: _react2.default.PropTypes.bool,
-  color: _react2.default.PropTypes.bool,
-  image: _react2.default.PropTypes.bool,
-  video: _react2.default.PropTypes.bool,
-  audio: _react2.default.PropTypes.bool,
-  urls: _react2.default.PropTypes.bool,
-  field: _react2.default.PropTypes.bool,
-  autoSave: _react2.default.PropTypes.bool,
-  fullScreen: _react2.default.PropTypes.bool,
-  uploadConfig: _react2.default.PropTypes.shape({
-    QINIU_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_IMG_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_PFOP: _react2.default.PropTypes.shape({
-      url: _react2.default.PropTypes.string.isRequired
+  active: _propTypes2.default.bool,
+  importContent: _propTypes2.default.string,
+  cbReceiver: _propTypes2.default.func.isRequired,
+  undoRedo: _propTypes2.default.bool,
+  removeStyle: _propTypes2.default.bool,
+  pasteNoStyle: _propTypes2.default.bool,
+  blockStyle: _propTypes2.default.bool,
+  alignment: _propTypes2.default.bool,
+  inlineStyle: _propTypes2.default.bool,
+  color: _propTypes2.default.bool,
+  image: _propTypes2.default.bool,
+  video: _propTypes2.default.bool,
+  audio: _propTypes2.default.bool,
+  urls: _propTypes2.default.bool,
+  field: _propTypes2.default.bool,
+  autoSave: _propTypes2.default.bool,
+  fullScreen: _propTypes2.default.bool,
+  uploadConfig: _propTypes2.default.shape({
+    QINIU_URL: _propTypes2.default.string.isRequired,
+    QINIU_IMG_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_PFOP: _propTypes2.default.shape({
+      url: _propTypes2.default.string.isRequired
     }),
-    QINIU_VIDEO_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_FILE_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_IMG_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_VIDEO_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_FILE_URL: _react2.default.PropTypes.string.isRequired
+    QINIU_VIDEO_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_FILE_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_IMG_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_VIDEO_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_FILE_URL: _propTypes2.default.string.isRequired
   }),
-  convertFormat: _react2.default.PropTypes.oneOf(['html', 'markdown', 'raw'])
+  convertFormat: _propTypes2.default.oneOf(['html', 'markdown', 'raw'])
 };
 EditorConcist.defaultProps = {
   undoRedo: true,

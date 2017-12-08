@@ -24,17 +24,17 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
-        presets: ['es2015', 'react']
+        presets: ['env', 'react']
       }
     }, {
       test: /.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
-        presets: ['es2015', 'react'],
+        presets: ['env', 'react'],
       },
       loaders: [
-        'babel?presets[]=react,presets[]=es2015,presets[]=stage-2'
+        'babel?presets[]=react,presets[]=env,presets[]=stage-2'
       ]
     }, {
       test: /\.(jpg|png)$/,

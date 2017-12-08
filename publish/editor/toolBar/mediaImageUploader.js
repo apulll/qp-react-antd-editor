@@ -1,16 +1,24 @@
 'use strict';
 
+var _style5 = require('antd/lib/modal/style');
+
 var _modal = require('antd/lib/modal');
 
 var _modal2 = _interopRequireDefault(_modal);
+
+var _style6 = require('antd/lib/button/style');
 
 var _button = require('antd/lib/button');
 
 var _button2 = _interopRequireDefault(_button);
 
+var _style7 = require('antd/lib/icon/style');
+
 var _icon = require('antd/lib/icon');
 
 var _icon2 = _interopRequireDefault(_icon);
+
+var _style8 = require('antd/lib/message/style');
 
 var _message = require('antd/lib/message');
 
@@ -27,6 +35,10 @@ var _businessComponents = require('../../global/components/businessComponents');
 var _cloneDeep = require('lodash/cloneDeep');
 
 var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -309,18 +321,18 @@ var ImgStyleControls = function (_Component) {
 }(_react.Component);
 
 ImgStyleControls.propTypes = {
-  receiveImage: _react2.default.PropTypes.func.isRequired,
-  uploadConfig: _react2.default.PropTypes.shape({
-    QINIU_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_IMG_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_PFOP: _react2.default.PropTypes.shape({
-      url: _react2.default.PropTypes.string.isRequired
+  receiveImage: _propTypes2.default.func.isRequired,
+  uploadConfig: _propTypes2.default.shape({
+    QINIU_URL: _propTypes2.default.string.isRequired,
+    QINIU_IMG_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_PFOP: _propTypes2.default.shape({
+      url: _propTypes2.default.string.isRequired
     }),
-    QINIU_VIDEO_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_FILE_TOKEN_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_IMG_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_VIDEO_URL: _react2.default.PropTypes.string.isRequired,
-    QINIU_DOMAIN_FILE_URL: _react2.default.PropTypes.string.isRequired
+    QINIU_VIDEO_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_FILE_TOKEN_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_IMG_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_VIDEO_URL: _propTypes2.default.string.isRequired,
+    QINIU_DOMAIN_FILE_URL: _propTypes2.default.string.isRequired
   })
 };
 

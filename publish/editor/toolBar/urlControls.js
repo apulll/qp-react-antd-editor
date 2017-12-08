@@ -1,5 +1,7 @@
 "use strict";
 
+var _style2 = require("antd/lib/icon/style");
+
 var _icon = require("antd/lib/icon");
 
 var _icon2 = _interopRequireDefault(_icon);

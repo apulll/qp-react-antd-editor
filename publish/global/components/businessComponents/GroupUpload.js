@@ -1,20 +1,30 @@
 'use strict';
 
+var _style6 = require('antd/lib/modal/style');
+
 var _modal = require('antd/lib/modal');
 
 var _modal2 = _interopRequireDefault(_modal);
+
+var _style7 = require('antd/lib/select/style');
 
 var _select = require('antd/lib/select');
 
 var _select2 = _interopRequireDefault(_select);
 
+var _style8 = require('antd/lib/checkbox/style');
+
 var _checkbox = require('antd/lib/checkbox');
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
+var _style9 = require('antd/lib/button/style');
+
 var _button = require('antd/lib/button');
 
 var _button2 = _interopRequireDefault(_button);
+
+var _style10 = require('antd/lib/message/style');
 
 var _message = require('antd/lib/message');
 

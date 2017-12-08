@@ -1,8 +1,12 @@
 'use strict';
 
+var _style3 = require('antd/lib/popconfirm/style');
+
 var _popconfirm = require('antd/lib/popconfirm');
 
 var _popconfirm2 = _interopRequireDefault(_popconfirm);
+
+var _style4 = require('antd/lib/icon/style');
 
 var _icon = require('antd/lib/icon');
 
